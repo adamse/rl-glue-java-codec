@@ -1,6 +1,5 @@
 <project name="JavaRLGlueCodec" basedir="." >
-    <!-- This file holds the RLGlueCodec.spec.version -->
-  <property name="RLGlueCodec.spec.version" value="2.07"/>
+    <property name="RLGlueCodec.spec.version" value="2.07"/>
 
 	<!-- Things required for build-common.xml -->
 	<property name="main.project.name" value="${ant.project.name}"/>
