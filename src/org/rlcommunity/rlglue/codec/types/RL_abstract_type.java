@@ -23,6 +23,8 @@ limitations under the License.
  */
 package org.rlcommunity.rlglue.codec.types;
 
+import java.util.Arrays;
+
 /**
  * Common superclass for all of the Java RL-Glue types.
  * Try to keep handles to the objects and not their arrays, 
@@ -243,5 +245,41 @@ public class RL_abstract_type implements Comparable {
             }
         }
         return 0;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + Arrays.hashCode(this.charArray);
+        result = prime * result + Arrays.hashCode(this.intArray);
+        result = prime * result + Arrays.hashCode(this.doubleArray);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        RL_abstract_type other = (RL_abstract_type) obj;
+        if (!Arrays.equals(this.charArray, other.charArray))
+            return false;
+
+        if (!Arrays.equals(this.doubleArray, other.doubleArray))
+            return false;
+
+        if (!Arrays.equals(this.intArray, other.intArray))
+            return false;
+
+        return true;
     }
 }
