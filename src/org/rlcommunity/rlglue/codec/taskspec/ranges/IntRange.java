@@ -19,10 +19,7 @@
 
 package org.rlcommunity.rlglue.codec.taskspec.ranges;
 
-import java.util.StringTokenizer;
-
 /**
- *
  * @author Brian Tanner
  */
 public class IntRange extends AbstractRange {
@@ -37,13 +34,14 @@ public class IntRange extends AbstractRange {
     /**
      * Constructs an unknown to unknown IntRange
      */
-    public IntRange(){
+    public IntRange() {
         this(1);
     }
+
     /**
      * Constructs a set of howMany unknown to unknown IntRange
      */
-    public IntRange(int howMany){
+    public IntRange(int howMany) {
         super(howMany);
         setMinUnspecified();
         setMaxUnspecified();
@@ -51,29 +49,31 @@ public class IntRange extends AbstractRange {
 
     /**
      * This should be a 2 or 3 tuple range like "1 2" or "5 1 2"
+     *
      * @param thisRange
      */
     public IntRange(String thisRange) {
         super(thisRange);
     }
-    
+
     /**
      * Return the size of the range.  So, if the range was [0,0], the range size
      * is 1.  If it is [0,9], the range size is 10, etc.  Good for determining
      * for big of an array you need to hold all possible values.
-     * 
+     * <p/>
      * Behavior is undefined if min or max has a special value.
+     *
      * @return The size of the range (max-min+1) if neither is a special value (NEGINF, UNSPEC, etc)
      */
-    public int getRangeSize(){
-        return getMax()-getMin()+1;
+    public int getRangeSize() {
+        return getMax() - getMin() + 1;
     }
-    
+
     /**
      * Constructs a min to max IntRange
      */
     public IntRange(int min, int max) {
-        this(min,max,1);
+        this(min, max, 1);
     }
 
     /**
@@ -81,37 +81,40 @@ public class IntRange extends AbstractRange {
      */
     public IntRange(int min, int max, int howMany) {
         super(howMany);
-        this.min=min;
-        this.max=max;
+        this.min = min;
+        this.max = max;
     }
-    
-    public int getMin(){
-        if(hasSpecialMinStatus()){
+
+    public int getMin() {
+        if (hasSpecialMinStatus()) {
             System.err.println("This variable has a special state.  The return value of it's getMin method is invalid.");
         }
         return min;
     }
-    public int getMax(){
-        if(hasSpecialMaxStatus()){
+
+    public int getMax() {
+        if (hasSpecialMaxStatus()) {
             System.err.println("This variable has a special state.  The return value of it's getMin method is invalid.");
         }
         return max;
     }
-    
-        public void setMax(int newMax){
-        this.max=newMax;
+
+    public void setMax(int newMax) {
+        this.max = newMax;
         super.setMaxSpecified();
     }
-    public void setMin(int newMin){
-        this.min=newMin;
+
+    public void setMin(int newMin) {
+        this.min = newMin;
         super.setMinSpecified();
     }
 
-    protected void parseMin(String lowPart){
-            min = Integer.parseInt(lowPart);
+    protected void parseMin(String lowPart) {
+        min = Integer.parseInt(lowPart);
     }
-    protected void parseMax(String highPart){
-            max = Integer.parseInt(highPart);
+
+    protected void parseMax(String highPart) {
+        max = Integer.parseInt(highPart);
     }
 
     @Override
@@ -131,23 +134,26 @@ public class IntRange extends AbstractRange {
             return "" + getMax();
         }
     }
+
     @Override
-    public String toString(){
-        StringBuilder B=new StringBuilder();
-        B.append("Cardinality: "+super.getHowMany());
-        B.append(" Min: ");
-        if(hasSpecialMinStatus())
-            B.append(getMinSpecialStatus());
-        else
-            B.append(getMin());
-        B.append(" Max: ");
-        if(hasSpecialMaxStatus())
-            B.append(getMaxSpecialStatus());
-        else
-            B.append(getMax());
-        
-        B.append(" ");
-        return B.toString();
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Cardinality: ").append(super.getHowMany());
+        str.append(" Min: ");
+        if (hasSpecialMinStatus()) {
+            str.append(getMinSpecialStatus());
+        } else {
+            str.append(getMin());
+        }
+        str.append(" Max: ");
+        if (hasSpecialMaxStatus()) {
+            str.append(getMaxSpecialStatus());
+        } else {
+            str.append(getMax());
+        }
+
+        str.append(" ");
+        return str.toString();
     }
-           
+
 }
