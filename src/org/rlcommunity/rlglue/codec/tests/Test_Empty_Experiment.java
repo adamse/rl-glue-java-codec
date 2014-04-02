@@ -38,21 +38,21 @@ public class Test_Empty_Experiment {
 		Observation_action startTuple=RLGlue.RL_start();
 		
 		if(whichEpisode%2==0){
-			tester.check_fail(startTuple.getAction().getNumInts()!=0);
-			tester.check_fail(startTuple.getAction().getNumDoubles()!=0);
-			tester.check_fail(startTuple.getAction().getNumChars()!=0);
+			tester.check_fail(startTuple.getAction().getNumIntegersLength()!=0);
+			tester.check_fail(startTuple.getAction().getNumDoublesLength()!=0);
+			tester.check_fail(startTuple.getAction().getNumCharsLength()!=0);
 
-			tester.check_fail(startTuple.getObservation().getNumInts()!=0);
-			tester.check_fail(startTuple.getObservation().getNumDoubles()!=0);
-			tester.check_fail(startTuple.getObservation().getNumChars()!=0);
+			tester.check_fail(startTuple.getObservation().getNumIntegersLength()!=0);
+			tester.check_fail(startTuple.getObservation().getNumDoublesLength()!=0);
+			tester.check_fail(startTuple.getObservation().getNumCharsLength()!=0);
 		}else{
-			tester.check_fail(startTuple.getAction().getNumInts()!=7);
-			tester.check_fail(startTuple.getAction().getNumDoubles()!=3);
-			tester.check_fail(startTuple.getAction().getNumChars()!=1);
+			tester.check_fail(startTuple.getAction().getNumIntegersLength()!=7);
+			tester.check_fail(startTuple.getAction().getNumDoublesLength()!=3);
+			tester.check_fail(startTuple.getAction().getNumCharsLength()!=1);
 
-			tester.check_fail(startTuple.getObservation().getNumInts()!=2);
-			tester.check_fail(startTuple.getObservation().getNumDoubles()!=4);
-			tester.check_fail(startTuple.getObservation().getNumChars()!=5);
+			tester.check_fail(startTuple.getObservation().getNumIntegersLength()!=2);
+			tester.check_fail(startTuple.getObservation().getNumDoublesLength()!=4);
+			tester.check_fail(startTuple.getObservation().getNumCharsLength()!=5);
 		}
 		
 		for(int whichStep=0;whichStep<5;whichStep++){
@@ -61,21 +61,21 @@ public class Test_Empty_Experiment {
 			tester.check_fail(stepTuple.getReward() != 0);
 
 			if(whichEpisode%2==0){
-				tester.check_fail(stepTuple.getAction().getNumInts()!=0);
-				tester.check_fail(stepTuple.getAction().getNumDoubles()!=0);
-				tester.check_fail(stepTuple.getAction().getNumChars()!=0);
+				tester.check_fail(stepTuple.getAction().getNumIntegersLength()!=0);
+				tester.check_fail(stepTuple.getAction().getNumDoublesLength()!=0);
+				tester.check_fail(stepTuple.getAction().getNumCharsLength()!=0);
 
-				tester.check_fail(stepTuple.getObservation().getNumInts()!=0);
-				tester.check_fail(stepTuple.getObservation().getNumDoubles()!=0);
-				tester.check_fail(stepTuple.getObservation().getNumChars()!=0);
+				tester.check_fail(stepTuple.getObservation().getNumIntegersLength()!=0);
+				tester.check_fail(stepTuple.getObservation().getNumDoublesLength()!=0);
+				tester.check_fail(stepTuple.getObservation().getNumCharsLength()!=0);
 			}else{
-				tester.check_fail(stepTuple.getAction().getNumInts()!=7);
-				tester.check_fail(stepTuple.getAction().getNumDoubles()!=3);
-				tester.check_fail(stepTuple.getAction().getNumChars()!=1);
+				tester.check_fail(stepTuple.getAction().getNumIntegersLength()!=7);
+				tester.check_fail(stepTuple.getAction().getNumDoublesLength()!=3);
+				tester.check_fail(stepTuple.getAction().getNumCharsLength()!=1);
 
-				tester.check_fail(stepTuple.getObservation().getNumInts()!=2);
-				tester.check_fail(stepTuple.getObservation().getNumDoubles()!=4);
-				tester.check_fail(stepTuple.getObservation().getNumChars()!=5);
+				tester.check_fail(stepTuple.getObservation().getNumIntegersLength()!=2);
+				tester.check_fail(stepTuple.getObservation().getNumDoublesLength()!=4);
+				tester.check_fail(stepTuple.getObservation().getNumCharsLength()!=5);
 			}
 			
 		}

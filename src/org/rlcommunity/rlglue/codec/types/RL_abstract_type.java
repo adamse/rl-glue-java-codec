@@ -27,9 +27,10 @@ import java.util.Arrays;
 
 /**
  * Common superclass for all of the Java RL-Glue types.
- * Try to keep handles to the objects and not their arrays, 
- * because there is no guarantee that the arrays will not be 
+ * Try to keep handles to the objects and not their arrays,
+ * because there is no guarantee that the arrays will not be
  * reallocated during certain operations.
+ *
  * @author btanner
  */
 public class RL_abstract_type implements Comparable {
@@ -39,20 +40,22 @@ public class RL_abstract_type implements Comparable {
     public char[] charArray = null;
 
     /**
-     * Create a RL_abstract_type with arrays allocated according to numInts,
+     * Create a RL_abstract_type with arrays allocated according to numIntegers,
      * numDoubles, and numChars
-     * @param numInts  Size of int array to allocate.
+     *
+     * @param numIntegers    Size of int array to allocate.
      * @param numDoubles Size of double array to allocate.
-     * @param numChars Size of char array to allocate.
+     * @param numChars   Size of char array to allocate.
      */
-    public RL_abstract_type(int numInts, int numDoubles, int numChars) {
-        intArray = new int[numInts];
+    public RL_abstract_type(int numIntegers, int numDoubles, int numChars) {
+        intArray = new int[numIntegers];
         doubleArray = new double[numDoubles];
         charArray = new char[numChars];
     }
 
     /**
      * Create a new RL_abstract_type that is a deep, independent copy of src.
+     *
      * @param src
      */
     public RL_abstract_type(RL_abstract_type src) {
@@ -87,21 +90,21 @@ public class RL_abstract_type implements Comparable {
         charArray[which] = value;
     }
 
-    public int getNumInts() {
+    public int getNumIntegersLength() {
         if (intArray == null) {
             intArray = new int[0];
         }
         return intArray.length;
     }
 
-    public int getNumDoubles() {
+    public int getNumDoublesLength() {
         if (doubleArray == null) {
             doubleArray = new double[0];
         }
         return doubleArray.length;
     }
 
-    public int getNumChars() {
+    public int getNumCharsLength() {
         if (charArray == null) {
             charArray = new char[0];
         }
@@ -111,6 +114,7 @@ public class RL_abstract_type implements Comparable {
     /**
      * Useful (maybe?) utility method for deep copying one RL_Abstract_type
      * into another.
+     *
      * @param src
      * @param dest
      */
@@ -139,23 +143,23 @@ public class RL_abstract_type implements Comparable {
      */
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
-        b.append("numInts: " + intArray.length);
+        StringBuilder b = new StringBuilder();
+        b.append("numInts: ").append(intArray.length);
         b.append("\n");
-        b.append("numDoubles: " + doubleArray.length);
+        b.append("numDoubles: ").append(doubleArray.length);
         b.append("\n");
-        b.append("numChars: " + charArray.length);
+        b.append("numChars: ").append(charArray.length);
         b.append("\n");
         if (intArray != null) {
-            for (int i = 0; i < intArray.length; i++) {
-                b.append(" " + intArray[i]);
+            for (int anIntArray : intArray) {
+                b.append(" ").append(anIntArray);
             }
         }
-        for (int i = 0; i < doubleArray.length; i++) {
-            b.append(" " + doubleArray[i]);
+        for (double aDoubleArray : doubleArray) {
+            b.append(" ").append(aDoubleArray);
         }
-        for (int i = 0; i < charArray.length; i++) {
-            b.append(" " + charArray[i]);
+        for (char aCharArray : charArray) {
+            b.append(" ").append(aCharArray);
         }
 
         return b.toString();
@@ -164,9 +168,9 @@ public class RL_abstract_type implements Comparable {
     /**
      * Allows us to easily compare abstract types so that we can put them
      * in maps and stuff.
+     *
      * @param cObject
      * @return -1 if this is 'smaller' then cObject, +1 if this is 'bigger' than cObject, 0 if they are identical.
-     *
      */
     public int compareTo(Object cObject) {
         RL_abstract_type compareO = (RL_abstract_type) cObject;
@@ -271,15 +275,9 @@ public class RL_abstract_type implements Comparable {
             return false;
 
         RL_abstract_type other = (RL_abstract_type) obj;
-        if (!Arrays.equals(this.charArray, other.charArray))
-            return false;
+        return Arrays.equals(this.charArray, other.charArray)
+                && Arrays.equals(this.doubleArray, other.doubleArray)
+                && Arrays.equals(this.intArray, other.intArray);
 
-        if (!Arrays.equals(this.doubleArray, other.doubleArray))
-            return false;
-
-        if (!Arrays.equals(this.intArray, other.intArray))
-            return false;
-
-        return true;
     }
 }

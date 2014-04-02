@@ -39,9 +39,9 @@ public class Test_1_Experiment {
 
 
 
-        tester.check_fail(roat.getObservation().getNumInts() != 1);
-        tester.check_fail(roat.getObservation().getNumDoubles() != 0);
-        tester.check_fail(roat.getObservation().getNumChars() != 0);
+        tester.check_fail(roat.getObservation().getNumIntegersLength() != 1);
+        tester.check_fail(roat.getObservation().getNumDoublesLength() != 0);
+        tester.check_fail(roat.getObservation().getNumCharsLength() != 0);
         tester.check_fail(roat.getObservation().intArray[0] != 0);
         tester.check_fail(!"one|1.|one".equals(RLGlue.RL_env_message("one")));
         tester.check_fail(!"one|1.|one".equals(RLGlue.RL_agent_message("one")));
@@ -54,9 +54,9 @@ public class Test_1_Experiment {
         tester.check_fail(!"two|2.2.|two".equals(RLGlue.RL_env_message("two")));
         tester.check_fail(!"two|2.2.|two".equals(RLGlue.RL_agent_message("two")));
         tester.check_fail(roat.getTerminal() != 0);
-        tester.check_fail(roat.getObservation().getNumInts() != 1);
-        tester.check_fail(roat.getObservation().getNumDoubles() != 0);
-        tester.check_fail(roat.getObservation().getNumChars() != 0);
+        tester.check_fail(roat.getObservation().getNumIntegersLength() != 1);
+        tester.check_fail(roat.getObservation().getNumDoublesLength() != 0);
+        tester.check_fail(roat.getObservation().getNumCharsLength() != 0);
         tester.check_fail(roat.getObservation().intArray[0] != 1);
 
         roat = RLGlue.RL_step();
@@ -64,18 +64,18 @@ public class Test_1_Experiment {
         tester.check_fail(!"three||three".equals(RLGlue.RL_env_message("three")));
         tester.check_fail(!"three||three".equals(RLGlue.RL_agent_message("three")));
         tester.check_fail(roat.getTerminal() != 0);
-        tester.check_fail(roat.getObservation().getNumInts() != 1);
-        tester.check_fail(roat.getObservation().getNumDoubles() != 0);
-        tester.check_fail(roat.getObservation().getNumChars() != 0);
+        tester.check_fail(roat.getObservation().getNumIntegersLength() != 1);
+        tester.check_fail(roat.getObservation().getNumDoublesLength() != 0);
+        tester.check_fail(roat.getObservation().getNumCharsLength() != 0);
         tester.check_fail(roat.getObservation().intArray[0] != 2);
 
         roat = RLGlue.RL_step();
         tester.check_fail(!"four|4.|four".equals(RLGlue.RL_env_message("four")));
         tester.check_fail(!"four|4.|four".equals(RLGlue.RL_agent_message("four")));
         tester.check_fail(roat.getTerminal() != 0);
-        tester.check_fail(roat.getObservation().getNumInts() != 1);
-        tester.check_fail(roat.getObservation().getNumDoubles() != 0);
-        tester.check_fail(roat.getObservation().getNumChars() != 0);
+        tester.check_fail(roat.getObservation().getNumIntegersLength() != 1);
+        tester.check_fail(roat.getObservation().getNumDoublesLength() != 0);
+        tester.check_fail(roat.getObservation().getNumCharsLength() != 0);
         tester.check_fail(roat.getObservation().intArray[0] != 3);
 
 
@@ -91,9 +91,9 @@ public class Test_1_Experiment {
         But, in order to keep the other tests all working, I'll allow it*/
 
         roat = RLGlue.RL_step();
-        tester.check_fail(roat.getObservation().getNumInts() != 5);
-        tester.check_fail(roat.getObservation().getNumDoubles() != 5);
-        tester.check_fail(roat.getObservation().getNumChars() != 5);
+        tester.check_fail(roat.getObservation().getNumIntegersLength() != 5);
+        tester.check_fail(roat.getObservation().getNumDoublesLength() != 5);
+        tester.check_fail(roat.getObservation().getNumCharsLength() != 5);
         tester.check_fail(roat.getObservation().getInt(0) != 173);
         tester.check_fail(roat.getObservation().getInt(1) != -173);
         tester.check_fail(roat.getObservation().getInt(2) != 2147483647);
