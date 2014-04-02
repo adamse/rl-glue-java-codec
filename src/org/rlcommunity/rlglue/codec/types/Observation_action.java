@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2007, Brian Tanner
  * 
 http://rl-glue-ext.googlecode.com/
@@ -22,8 +22,8 @@ package org.rlcommunity.rlglue.codec.types;
 
 public class Observation_action {
 
-    public Observation o;
-    public Action a;
+    private Observation o;
+    private Action a;
 
     public Observation_action() {
         o = new Observation();

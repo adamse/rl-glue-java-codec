@@ -23,22 +23,19 @@ limitations under the License.
  */
 package org.rlcommunity.rlglue.codec;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import org.rlcommunity.rlglue.codec.network.Network;
 import org.rlcommunity.rlglue.codec.network.RLGlueDisconnectException;
-import org.rlcommunity.rlglue.codec.types.Action;
-import org.rlcommunity.rlglue.codec.types.Observation;
-import org.rlcommunity.rlglue.codec.types.Observation_action;
-import org.rlcommunity.rlglue.codec.types.RL_abstract_type;
-import org.rlcommunity.rlglue.codec.types.Reward_observation_action_terminal;
-import org.rlcommunity.rlglue.codec.types.Reward_observation_terminal;
+import org.rlcommunity.rlglue.codec.types.*;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 /**
- * This is the network connection for an experiment program that will talk to the 
+ * This is the network connection for an experiment program that will talk to the
  * C/C++ rl_glue executable over sockets.
- * @since 2.0
+ *
  * @author btanner
+ * @since 2.0
  */
 public class NetGlue implements RLGlueInterface {
 
@@ -66,7 +63,8 @@ public class NetGlue implements RLGlueInterface {
     }
 
     /**
-     * Specify custom host and port to connect to rl_glue 
+     * Specify custom host and port to connect to rl_glue
+     *
      * @since 2.0
      */
     public NetGlue(String host, int port) {
@@ -76,6 +74,7 @@ public class NetGlue implements RLGlueInterface {
     /**
      * Try these new settings.  We'll only actually set them if they seem valid.
      * I realize it's bad that we have this copied in AgentLoader, EnvLoader, and netGlue.
+     *
      * @param hostString
      * @param portString
      */
@@ -111,18 +110,18 @@ public class NetGlue implements RLGlueInterface {
         forceConnection();
 
         sendEmpty(Network.kRLInit, "RL_init");
-        String task_spec = network.getString();
-        return task_spec;
+        return network.getString();
     }
 
     public synchronized Observation_action RL_start() {
         sendEmpty(Network.kRLStart, "RL_start");
         Observation_action obsact = new Observation_action();
 
-        obsact.o = network.getObservation();
-        obsact.a = network.getAction();
+        obsact.setObservation(network.getObservation());
+        obsact.setAction(network.getAction());
         return obsact;
     }
+
     public synchronized Observation RL_env_start() {
         sendEmpty(Network.kRLEnvStart, "RL_env_start");
         Observation obs = new Observation();
@@ -141,22 +140,20 @@ public class NetGlue implements RLGlueInterface {
     }
 
     public synchronized Action RL_agent_start(Observation theObservation) {
-        send_abstract_type(theObservation,Network.kRLAgentStart,"RL_agent_start");
-        Action theAction=network.getAction();
-        return theAction;
+        send_abstract_type(theObservation, Network.kRLAgentStart, "RL_agent_start");
+        return network.getAction();
     }
 
     public synchronized Action RL_agent_step(double theReward, Observation theObservation) {
-        send_reward_observation(theReward,theObservation,Network.kRLAgentStep,"RL_agent_step");
-        Action theAction=network.getAction();
-        return theAction;
+        send_reward_observation(theReward, theObservation, Network.kRLAgentStep, "RL_agent_step");
+        return network.getAction();
     }
 
     public synchronized void RL_agent_end(double theReward) {
-        sendDouble(theReward,Network.kRLAgentEnd,"RL_agent_end");
+        sendDouble(theReward, Network.kRLAgentEnd, "RL_agent_end");
     }
 
-    
+
     public synchronized Reward_observation_action_terminal RL_step() {
         sendEmpty(Network.kRLStep, "RL_step");
 
@@ -177,8 +174,7 @@ public class NetGlue implements RLGlueInterface {
         forceConnection();
 
         sendString(message, Network.kRLAgentMessage, "RL_agent_message");
-        String response = network.getString();
-        return response;
+        return network.getString();
 
     }
 
@@ -186,48 +182,34 @@ public class NetGlue implements RLGlueInterface {
         forceConnection();
 
         sendString(message, Network.kRLEnvMessage, "RL_env_message");
-        String response = network.getString();
-        return response;
+        return network.getString();
     }
 
     public synchronized double RL_return() {
         sendEmpty(Network.kRLReturn, "RL_return");
 
-        double reward = network.getDouble();
-
-        return reward;
+        return network.getDouble();
     }
 
     public synchronized int RL_num_steps() {
         sendEmpty(Network.kRLNumSteps, "RL_num_steps");
 
-        int numSteps = network.getInt();
-
-        return numSteps;
+        return network.getInt();
     }
 
     public synchronized int RL_num_episodes() {
         sendEmpty(Network.kRLNumEpisodes, "RL_num_episodes");
 
-        int numEpisodes = network.getInt();
-
-        return numEpisodes;
+        return network.getInt();
     }
 
     public synchronized int RL_episode(int numSteps) {
         sendInt(numSteps, Network.kRLEpisode, "RL_episode");
-        int exitStatus = network.getInt();
-        return exitStatus;
+        return network.getInt();
     }
 
     /**
-     * 
-     * 
-     * 
      * PRIVATE METHODS BELOW ARE HELPERS
-     * 
-     * 
-     * 
      */
     private void forceConnection() {
         if (network == null) {
@@ -238,7 +220,6 @@ public class NetGlue implements RLGlueInterface {
             System.out.println("\tConnecting to " + host + " on port " + port + "...");
 
             network = new Network();
-
 
 
             // Connect
@@ -253,7 +234,7 @@ public class NetGlue implements RLGlueInterface {
                 network.send();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-               System.exit(1);
+                System.exit(1);
             }
         }
     }
@@ -261,37 +242,38 @@ public class NetGlue implements RLGlueInterface {
     /**
      * This method is called by the experiment program codec after sending something.
      * February 9 2009 :: I am making it robust to non-blocking network.recv.
+     *
      * @param state
      * @throws java.io.IOException
      */
     private synchronized void doStandardRecv(int state) throws IOException {
         network.clearRecvBuffer();
-        try{
-        int actualRecvSize=network.recv(8);
-        int recvSizeWithoutHeader = actualRecvSize-8;
+        try {
+            int actualRecvSize = network.recv(8);
+            int recvSizeWithoutHeader = actualRecvSize - 8;
 
-        int glueState = network.getInt(0);
-        int dataSize = network.getInt(Network.kIntSize);
-        int remaining = dataSize - recvSizeWithoutHeader;
+            int glueState = network.getInt(0);
+            int dataSize = network.getInt(Network.kIntSize);
+            int remaining = dataSize - recvSizeWithoutHeader;
 
-        if (remaining < 0) {
-            remaining = 0;
-        }
-        int remainingReceived = network.recv(remaining);
+            if (remaining < 0) {
+                remaining = 0;
+            }
+            int remainingReceived = network.recv(remaining);
 
-        network.flipRecvBuffer();
+            network.flipRecvBuffer();
 
-        // Discard the header - we should have a more elegant method for doing this.
-        network.getInt();
-        network.getInt();
+            // Discard the header - we should have a more elegant method for doing this.
+            network.getInt();
+            network.getInt();
 
-        if (glueState != state) {
-            System.err.println("Not synched with server. glueState = " + glueState + " but should be " + state);
-           System.exit(1);
-        }
-        }catch(RLGlueDisconnectException e){
+            if (glueState != state) {
+                System.err.println("Not synched with server. glueState = " + glueState + " but should be " + state);
+                System.exit(1);
+            }
+        } catch (RLGlueDisconnectException e) {
             System.err.println(e.getMessage());
-           System.exit(1);
+            System.exit(1);
         }
     }
 
@@ -316,11 +298,11 @@ public class NetGlue implements RLGlueInterface {
 
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("You must call RL_init before calling " + callerName);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
@@ -331,11 +313,11 @@ public class NetGlue implements RLGlueInterface {
             doStandardRecv(theCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("You must call RL_init before calling " + callerName);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
@@ -352,14 +334,15 @@ public class NetGlue implements RLGlueInterface {
             doStandardRecv(theCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("You must call RL_init before calling " + callerName);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
+
     private synchronized void sendDouble(double doubleToSend, int theCode, String callerName) {
         try {
             network.clearSendBuffer();
@@ -372,22 +355,24 @@ public class NetGlue implements RLGlueInterface {
             doStandardRecv(theCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("You must call RL_init before calling " + callerName);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
+
     /**
      * Added by Brian Tanner to simplify the code in here.
+     *
      * @param theObject
      * @param theCode
      * @param callerName
      */
     private synchronized void send_abstract_type(RL_abstract_type theObject, int theCode, String callerName) {
-        assert theObject!=null : "Someone tried to send a null object in NetGlue from: "+callerName;
+        assert theObject != null : "Someone tried to send a null object in NetGlue from: " + callerName;
         try {
             network.clearSendBuffer();
             network.putInt(theCode);
@@ -399,26 +384,28 @@ public class NetGlue implements RLGlueInterface {
             doStandardRecv(theCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
-            System.err.println("NULL Exception in send_abstract_type.  Assuming it's because the network is null.\n  Is it: (network==null)="+(network==null)+"?.\nYou must call RL_init before calling " + callerName);
+            System.err.println("NULL Exception in send_abstract_type.  Assuming it's because the network is null.\n  Is it: (network==null)=" + (network == null) + "?.\nYou must call RL_init before calling " + callerName);
             System.out.println(nullException);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
+
     /**
      * Added by Brian Tanner to simplify the code in here.
+     *
      * @param theObject
      * @param theCode
      * @param callerName
      */
-    private synchronized void send_reward_observation(double theReward,RL_abstract_type theObservation, int theCode, String callerName) {
+    private synchronized void send_reward_observation(double theReward, RL_abstract_type theObservation, int theCode, String callerName) {
         try {
             network.clearSendBuffer();
             network.putInt(theCode);
-            network.putInt(Network.sizeOf(theObservation)+Network.sizeOf(theReward));
+            network.putInt(Network.sizeOf(theObservation) + Network.sizeOf(theReward));
             network.putDouble(theReward);
             network.putAbstractType(theObservation);
             network.flipSendBuffer();
@@ -427,11 +414,11 @@ public class NetGlue implements RLGlueInterface {
             doStandardRecv(theCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("You must call RL_init before calling " + callerName);
             nullException.printStackTrace();
-           System.exit(1);
+            System.exit(1);
         }
 
     }
