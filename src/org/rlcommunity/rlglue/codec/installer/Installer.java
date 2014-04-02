@@ -4,14 +4,9 @@
  */
 package org.rlcommunity.rlglue.codec.installer;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.rlcommunity.rlglue.codec.RLGlueCore;
+
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
@@ -20,11 +15,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.rlcommunity.rlglue.codec.RLGlueCore;
 
 /**
  * This class can be used to check the installation status of the RL-Glue
  * Java Extension,  It can install or uninstall that codec also.
+ *
  * @author btanner
  */
 public class Installer {
@@ -58,13 +53,13 @@ public class Installer {
                     "remove the old one before installing the presumably newer one.  I (the one writing this) am the old one.\n");
 
             System.err.println("To remove me, try:\n java org.rlcommunity.rlglue.codec.RLGlueCore --uninstall");
-           System.exit(1);
-        } 
+            System.exit(1);
+        }
 
         if (theJarFile == null) {
             System.err.println("Could not get the JAR that you are " +
                     "executing from, aborting.");
-           System.exit(1);
+            System.exit(1);
         }
 
         System.out.println("This program will install the RL-Glue Java " +
@@ -72,11 +67,9 @@ public class Installer {
                 "into one of your system extension directories.  This may " +
                 "require superuser or root access to do.  Also, depending on the " +
                 "location you choose, you may need to " +
-                "reinstall if you update your VM.\n\nYou should be aware that there are some "+
-				"disadvantages to installing the codec instead of just manually putting it into "+
-				"you java class path.  These are explained in the manual.");
-
-
+                "reinstall if you update your VM.\n\nYou should be aware that there are some " +
+                "disadvantages to installing the codec instead of just manually putting it into " +
+                "you java class path.  These are explained in the manual.");
 
 
         System.out.println();
@@ -137,7 +130,7 @@ public class Installer {
                     theChoice = choiceMap.get(theIntChoice);
                 } else {
                     System.err.println("You did not enter a valid selection or chose to quit, cancelling installation.");
-                   System.exit(1);
+                    System.exit(1);
                 }
 
 
@@ -160,6 +153,7 @@ public class Installer {
 
     /**
      * Returns true of this class was loaded from an installed location.
+     *
      * @return
      */
     public static boolean isInstalled() {
@@ -167,11 +161,9 @@ public class Installer {
 
         File thisJarFile = getThisJar();
 
-        if (thisJarFile == null) {
-            return false;
-        }
+        return thisJarFile != null
+                && allExtensionDirs.contains(thisJarFile.getParentFile());
 
-        return allExtensionDirs.contains(thisJarFile.getParentFile());
     }
 
     /**
@@ -183,7 +175,7 @@ public class Installer {
             System.out.println("You cannot uninstall the RL-Glue Java Extension if " +
                     "it has not been formally \"installed\" on your system.  From " +
                     "what I can detect, you loaded the RL-Glue codec from: \n" + getThisJar());
-           System.exit(1);
+            System.exit(1);
         }
         File theJarFile = getThisJar();
         if (!theJarFile.getName().equals("JavaRLGlueCodec.jar")) {
@@ -191,13 +183,13 @@ public class Installer {
                     "is in appears to be part of a redistribution.  Deleting" +
                     "a jar that is not called \"JavaRLGlueCodec.jar\" might" +
                     "make you mad.  The jar that I was loaded from is: \n" + getThisJar());
-           System.exit(1);
+            System.exit(1);
         }
-        System.out.println("Removing RL-Glue Java Extension from:\n"+getThisJar().getAbsolutePath());
+        System.out.println("Removing RL-Glue Java Extension from:\n" + getThisJar().getAbsolutePath());
         getThisJar().delete();
-        if(getThisJar().exists()){
+        if (getThisJar().exists()) {
             System.err.println("Could not delete the file.  Try again with sudo or root access.");
-        }else{
+        } else {
             System.out.println("Uninstallation Complete!");
         }
     }
@@ -229,6 +221,7 @@ public class Installer {
     /**
      * Copy the source file to the target file.  If the destination file
      * does not exist, it is created.
+     *
      * @param source
      * @param target
      * @throws java.io.IOException
