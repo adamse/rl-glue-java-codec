@@ -1,6 +1,6 @@
 A somewhat improved version of Brian Tanner's RL-Glue Java codec.
 
-To install run:
+To build and install run:
 
 ant jar
 java -jar products/JavaRLGlueCodec.jar --install
