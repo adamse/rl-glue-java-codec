@@ -71,4 +71,25 @@ public class Observation_action {
     public Observation getObservation() {
         return o;
     }
+
+    @Override
+    public int hashCode() {
+        return o.hashCode() * 31 + a.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        Observation_action ao = (Observation_action) obj;
+
+        return this.o.equals(ao.o) && this.a.equals(ao.a);
+    }
 }
