@@ -75,9 +75,9 @@ public class Test_Empty_Environment implements EnvironmentInterface {
         Reward_observation_terminal ro=new Reward_observation_terminal();
         
 	if(whichEpisode%2==0)
-            ro.o=emptyObservation;
+            ro.setObservation(emptyObservation);
         else
-            ro.o=nonEmptyObservation;
+            ro.setObservation(nonEmptyObservation);
         return ro;
     }
 

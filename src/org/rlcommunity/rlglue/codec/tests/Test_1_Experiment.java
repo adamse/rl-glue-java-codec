@@ -46,14 +46,14 @@ public class Test_1_Experiment {
         tester.check_fail(!"one|1.|one".equals(RLGlue.RL_env_message("one")));
         tester.check_fail(!"one|1.|one".equals(RLGlue.RL_agent_message("one")));
 
-        tester.check_fail(roat.terminal != 0);
+        tester.check_fail(roat.getTerminal() != 0);
 
 
         roat = RLGlue.RL_step();
 
         tester.check_fail(!"two|2.2.|two".equals(RLGlue.RL_env_message("two")));
         tester.check_fail(!"two|2.2.|two".equals(RLGlue.RL_agent_message("two")));
-        tester.check_fail(roat.terminal != 0);
+        tester.check_fail(roat.getTerminal() != 0);
         tester.check_fail(roat.getObservation().getNumInts() != 1);
         tester.check_fail(roat.getObservation().getNumDoubles() != 0);
         tester.check_fail(roat.getObservation().getNumChars() != 0);
@@ -63,7 +63,7 @@ public class Test_1_Experiment {
 
         tester.check_fail(!"three||three".equals(RLGlue.RL_env_message("three")));
         tester.check_fail(!"three||three".equals(RLGlue.RL_agent_message("three")));
-        tester.check_fail(roat.terminal != 0);
+        tester.check_fail(roat.getTerminal() != 0);
         tester.check_fail(roat.getObservation().getNumInts() != 1);
         tester.check_fail(roat.getObservation().getNumDoubles() != 0);
         tester.check_fail(roat.getObservation().getNumChars() != 0);
@@ -72,7 +72,7 @@ public class Test_1_Experiment {
         roat = RLGlue.RL_step();
         tester.check_fail(!"four|4.|four".equals(RLGlue.RL_env_message("four")));
         tester.check_fail(!"four|4.|four".equals(RLGlue.RL_agent_message("four")));
-        tester.check_fail(roat.terminal != 0);
+        tester.check_fail(roat.getTerminal() != 0);
         tester.check_fail(roat.getObservation().getNumInts() != 1);
         tester.check_fail(roat.getObservation().getNumDoubles() != 0);
         tester.check_fail(roat.getObservation().getNumChars() != 0);
@@ -82,7 +82,7 @@ public class Test_1_Experiment {
         roat = RLGlue.RL_step();
         tester.check_fail(!"five|5.5.|five".equals(RLGlue.RL_env_message("five")));
         tester.check_fail(!"five|4.|five".equals(RLGlue.RL_agent_message("five")));
-        tester.check_fail(roat.terminal == 0);
+        tester.check_fail(roat.getTerminal() == 0);
 
 
         /* Gabor has made it so this environment will step past terminal.  This is

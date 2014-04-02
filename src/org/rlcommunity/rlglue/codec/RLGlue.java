@@ -142,8 +142,7 @@ public class RLGlue {
      */
     public static int RL_episode(int numSteps) {
         checkInstance();
-        int terminationCondition = instance.RL_episode(numSteps);
-        return terminationCondition;
+        return instance.RL_episode(numSteps);
     }
 
 
@@ -247,7 +246,7 @@ public class RLGlue {
             stepResponse = new Reward_observation_action_terminal();
         }
 
-        currentEpisodeOver = (stepResponse.terminal == 1);
+        currentEpisodeOver = (stepResponse.isTerminal());
         return stepResponse;
     }
     /**

@@ -133,9 +133,9 @@ public class NetGlue implements RLGlueInterface {
     public synchronized Reward_observation_terminal RL_env_step(Action theAction) {
         send_abstract_type(theAction, Network.kRLEnvStep, "RL_env_step");
         Reward_observation_terminal rot = new Reward_observation_terminal();
-        rot.terminal = network.getInt();
-        rot.r = network.getDouble();
-        rot.o = network.getObservation();
+        rot.setTerminal(network.getInt());
+        rot.setReward(network.getDouble());
+        rot.setObservation(network.getObservation());
         return rot;
     }
 
@@ -158,10 +158,10 @@ public class NetGlue implements RLGlueInterface {
         sendEmpty(Network.kRLStep, "RL_step");
 
         Reward_observation_action_terminal roat = new Reward_observation_action_terminal();
-        roat.terminal = network.getInt();
-        roat.r = network.getDouble();
-        roat.o = network.getObservation();
-        roat.a = network.getAction();
+        roat.setTerminal(network.getInt());
+        roat.setReward(network.getDouble());
+        roat.setObservation(network.getObservation());
+        roat.setAction(network.getAction());
 
         return roat;
     }
@@ -387,7 +387,7 @@ public class NetGlue implements RLGlueInterface {
             System.exit(1);
         } catch (NullPointerException nullException) {
             System.err.println("NULL Exception in send_abstract_type.  Assuming it's because the network is null.\n  Is it: (network==null)=" + (network == null) + "?.\nYou must call RL_init before calling " + callerName);
-            System.out.println(nullException);
+            System.out.println(nullException.getMessage());
             nullException.printStackTrace();
             System.exit(1);
         }

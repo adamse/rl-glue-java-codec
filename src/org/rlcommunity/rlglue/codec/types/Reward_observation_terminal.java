@@ -24,13 +24,14 @@ package org.rlcommunity.rlglue.codec.types;
  * I'm iteratively updating these methods to have getters and setters for
  * all components because eventually we might like to make the actual members
  * private.
+ *
  * @author btanner
  */
 public class Reward_observation_terminal {
 
-    public double r;
-    public Observation o;
-    public int terminal;
+    private double r;
+    private Observation o;
+    private int terminal;
 
     public Reward_observation_terminal() {
         r = 0;
@@ -44,8 +45,9 @@ public class Reward_observation_terminal {
 
     /**
      * Set the reward value.
+     *
+     * @param newReward The new reward
      * @since 2.0
-     * @param newReward
      */
     public void setReward(double newReward) {
         this.r = newReward;
@@ -70,7 +72,8 @@ public class Reward_observation_terminal {
 
     /**
      * This is a deep copy constructor
-     * @param src
+     *
+     * @param src Tne new src object
      */
     public Reward_observation_terminal(Reward_observation_terminal src) {
         this.o = src.o.duplicate();
@@ -79,8 +82,8 @@ public class Reward_observation_terminal {
     }
 
     /**
-     * @since 2.0 Want to move towards using terminal as a boolean not an int.
      * @return boolean representation of whether the episode is over.
+     * @since 2.0 Want to move towards using terminal as a boolean not an int.
      */
     public boolean isTerminal() {
         return terminal == 1;
@@ -90,8 +93,9 @@ public class Reward_observation_terminal {
      * One day we will make the members private and you'll have to use accessors.
      * It would be better if you used the version that returns a boolean, but this  is
      * better than accessing the members directly.
+     *
      * @return an integer, 1 if terminal, 0 if not
-     * @deprecated  use isTerminal
+     * @deprecated use isTerminal
      */
     public int getTerminal() {
         return terminal;
@@ -100,9 +104,9 @@ public class Reward_observation_terminal {
     /**
      * Adding this method in an effort to get us away from the integer terminal
      * type.  Eventually we can just use the methods and privatize the members.
+     *
+     * @param newTerminal The new terminal
      * @since 2.0
-     * @param newTerminal
-     * @return
      */
     public void setTerminal(boolean newTerminal) {
         if (newTerminal) {
@@ -113,8 +117,20 @@ public class Reward_observation_terminal {
     }
 
     /**
+     * Added since i'm cool
+     * @param newTerminal The new terminal condition.
+     * @since 4.0
+     */
+    public void setTerminal(int newTerminal) {
+        if (terminal != 0 && terminal != 1) {
+            throw new IllegalArgumentException("Non valid");
+        }
+        this.terminal = newTerminal;
+    }
+
+    /**
+     * @param o The new observation
      * @since 2.0
-     * @param o
      */
     public void setObservation(Observation o) {
         this.o = o;

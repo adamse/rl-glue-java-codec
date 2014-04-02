@@ -57,8 +57,8 @@ public class Test_Empty_Experiment {
 		
 		for(int whichStep=0;whichStep<5;whichStep++){
 			Reward_observation_action_terminal stepTuple=RLGlue.RL_step();
-			tester.check_fail(stepTuple.terminal!=0);
-			tester.check_fail(stepTuple.r!=0);
+			tester.check_fail(stepTuple.getTerminal() !=0);
+			tester.check_fail(stepTuple.getReward() != 0);
 
 			if(whichEpisode%2==0){
 				tester.check_fail(stepTuple.getAction().getNumInts()!=0);

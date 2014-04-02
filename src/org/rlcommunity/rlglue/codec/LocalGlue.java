@@ -162,12 +162,12 @@ public class LocalGlue implements RLGlueInterface {
         int currentStep = 0;
         RL_start();
         /* RL_start sets current step to 1, so we should start x at 1 */
-        for (currentStep = 1; rlStepResult.terminal != 1 && (maxStepsThisEpisode == 0 ? true : currentStep < maxStepsThisEpisode); currentStep++) {
+        for (currentStep = 1; !rlStepResult.isTerminal() && (maxStepsThisEpisode == 0 ? true : currentStep < maxStepsThisEpisode); currentStep++) {
             rlStepResult = RL_step();
         }
 
         /*Return the value of terminal to tell the caller whether the episode ended naturally or was cut off*/
-        return rlStepResult.terminal;
+        return rlStepResult.getTerminal();
     }
 
     public synchronized int RL_num_episodes() {

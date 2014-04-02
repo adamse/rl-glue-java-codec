@@ -487,9 +487,9 @@ public class Network {
     public void putRewardObservation(Reward_observation_terminal rewardObservation) {
         this.ensureSendCapacityRemains(Network.sizeOf(rewardObservation));
 
-        this.putInt(rewardObservation.terminal);
-        this.putDouble(rewardObservation.r);
-        this.putObservation(rewardObservation.o);
+        this.putInt(rewardObservation.getTerminal());
+        this.putDouble(rewardObservation.getReward());
+        this.putObservation(rewardObservation.getObservation());
     }
 
     protected void ensureSendCapacityRemains(int capacity) {
@@ -551,7 +551,7 @@ public class Network {
     public static int sizeOf(Reward_observation_terminal rewardObservation) {
         return Network.kIntSize + // terminal
                 Network.kDoubleSize + // reward
-                Network.sizeOf(rewardObservation.o);
+                Network.sizeOf(rewardObservation.getObservation());
     }
 }
 
