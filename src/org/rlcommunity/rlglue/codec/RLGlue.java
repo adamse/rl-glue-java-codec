@@ -17,11 +17,7 @@ limitations under the License.
  */
 package org.rlcommunity.rlglue.codec;
 
-import org.rlcommunity.rlglue.codec.types.Action;
-import org.rlcommunity.rlglue.codec.types.Observation;
-import org.rlcommunity.rlglue.codec.types.Observation_action;
-import org.rlcommunity.rlglue.codec.types.Reward_observation_action_terminal;
-import org.rlcommunity.rlglue.codec.types.Reward_observation_terminal;
+import org.rlcommunity.rlglue.codec.types.*;
 
 /**
  * This is the main RLGlue interface class for Experiment Programs.
@@ -33,10 +29,11 @@ import org.rlcommunity.rlglue.codec.types.Reward_observation_terminal;
  * </ul>
  * <p>For future flexibility, we have made this class use an instance of type
  * RLGlueInterface.  This will allow RL-Viz and other project swap out the network
- * codec for a local (direct-compile) implementation without requiring any 
+ * codec for a local (direct-compile) implementation without requiring any
  * changes to the experiment program.
  * <p>Since this class offers some convenient extensions, the traditional RL-Glue
  * methods have all been labeled as 'RL-Glue Core Method'.
+ *
  * @author btanner
  */
 public class RLGlue {
@@ -50,6 +47,7 @@ public class RLGlue {
      * <p> If you have an alternate RL-Glue engine (like the localGlue engine
      * from RL-Viz), you can use this method to specify the engine instead
      * of the network engine.
+     *
      * @param alternateGlueEngine The alternate glue engine.
      * @since 2.0
      */
@@ -64,6 +62,7 @@ public class RLGlue {
      * Experiment program, you could call this method in between.  This will disconnect
      * you from the glue.
      * <p> This has not been thoroughly tested : it is useful for RL-Viz.
+     *
      * @since 2.0
      */
     static public void resetGlueProxy() {
@@ -75,6 +74,7 @@ public class RLGlue {
     /**
      * Non-Core Method.
      * Has RL_init been called yet? (or since the last cleanup?)
+     *
      * @return Whether RL_init has been called.
      * @since 2.0
      */
@@ -83,7 +83,7 @@ public class RLGlue {
     }
 
     /**
-     *  RLGlue is only meant to be accessed statically, so this private 
+     * RLGlue is only meant to be accessed statically, so this private
      * constructor ensures we can never create an instance of RLGlue.
      */
     private RLGlue() {
@@ -204,8 +204,8 @@ public class RLGlue {
         }
         return returnObs;
     }
-    
-    public static Observation RL_env_start(){
+
+    public static Observation RL_env_start() {
         checkInstance();
         if (!inited) {
             System.err.println("-- Warning From RLGlue :: RL_env_start() was called without RL_init().");
@@ -218,13 +218,13 @@ public class RLGlue {
         }
         return returnObs;
     }
-    
-    public static Action RL_agent_start(Observation theObservation){
+
+    public static Action RL_agent_start(Observation theObservation) {
         checkInstance();
         if (!inited) {
             System.err.println("-- Warning From RLGlue :: RL_agent_start() was called without RL_init().");
         }
-        Action returnAct=instance.RL_agent_start(theObservation);
+        Action returnAct = instance.RL_agent_start(theObservation);
         if (returnAct == null) {
             System.err.println("-- Warning From RLGlue :: RL_agent_start() response was NULL, that should be impossible.");
             returnAct = new Action();
@@ -249,6 +249,7 @@ public class RLGlue {
         currentEpisodeOver = (stepResponse.isTerminal());
         return stepResponse;
     }
+
     /**
      * RL-Glue Core Method.
      */
@@ -265,21 +266,22 @@ public class RLGlue {
         currentEpisodeOver = stepResponse.isTerminal();
         return stepResponse;
     }
-    
-    
-    public static Action RL_agent_step(double theReward, Observation theObservation){
+
+
+    public static Action RL_agent_step(double theReward, Observation theObservation) {
         checkInstance();
         if (!inited) {
             System.err.println("-- Warning From RLGlue :: RL_agent_step() was called without RL_init().");
         }
-        Action theAction=instance.RL_agent_step(theReward, theObservation);
+        Action theAction = instance.RL_agent_step(theReward, theObservation);
         if (theAction == null) {
             System.err.println("-- Warning From RLGlue :: RL_agent_step() response was NULL, that should be impossible.");
             theAction = new Action();
         }
         return theAction;
     }
-    public static void RL_agent_end(double theReward){
+
+    public static void RL_agent_end(double theReward) {
         checkInstance();
         if (!inited) {
             System.err.println("-- Warning From RLGlue :: RL_agent_end() was called without RL_init().");

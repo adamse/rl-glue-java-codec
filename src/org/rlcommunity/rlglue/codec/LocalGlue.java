@@ -17,18 +17,14 @@ limitations under the License.
  */
 package org.rlcommunity.rlglue.codec;
 
-import org.rlcommunity.rlglue.codec.types.Action;
-import org.rlcommunity.rlglue.codec.types.Observation;
-import org.rlcommunity.rlglue.codec.types.Observation_action;
-
-import org.rlcommunity.rlglue.codec.types.Reward_observation_terminal;
-import org.rlcommunity.rlglue.codec.types.Reward_observation_action_terminal;
+import org.rlcommunity.rlglue.codec.types.*;
 
 /**
  * This is a local implementation of RL-Glue. It should be identical in behavior
  * to the RL-Glue code in the C/C++ RLGlueCore project.
- * @since 2.03
+ *
  * @author btanner
+ * @since 2.03
  */
 public class LocalGlue implements RLGlueInterface {
 
@@ -80,8 +76,7 @@ public class LocalGlue implements RLGlueInterface {
     public synchronized Observation_action RL_start() {
         Observation o = RL_env_start();
         lastAction = RL_agent_start(o);
-        Observation_action ao = new Observation_action(o, lastAction);
-        return ao;
+        return new Observation_action(o, lastAction);
     }
 
     public synchronized Observation RL_env_start() {
@@ -95,14 +90,15 @@ public class LocalGlue implements RLGlueInterface {
         }
         return o;
     }
+
     public synchronized Action RL_agent_start(Observation theObservation) {
-        Action theAction=A.agent_start(theObservation);
-            if (theAction == null) {
+        Action theAction = A.agent_start(theObservation);
+        if (theAction == null) {
             System.err.println("theAction came back as null from RL_start");
         }
         return theAction;
     }
-    
+
     public synchronized Reward_observation_terminal RL_env_step(Action theAction) {
         Reward_observation_terminal RO = E.env_step(theAction);
         if (RO == null) {
@@ -123,11 +119,11 @@ public class LocalGlue implements RLGlueInterface {
     }
 
 
-    public synchronized Action RL_agent_step( double theReward, Observation theObservation) {
-        Action theAction=A.agent_step(theReward, theObservation);
-            if (theAction == null) {
-                System.err.println("theAction came back as null from agent_step");
-            }
+    public synchronized Action RL_agent_step(double theReward, Observation theObservation) {
+        Action theAction = A.agent_step(theReward, theObservation);
+        if (theAction == null) {
+            System.err.println("theAction came back as null from agent_step");
+        }
         return theAction;
     }
 
@@ -139,13 +135,13 @@ public class LocalGlue implements RLGlueInterface {
         if (lastAction == null) {
             System.err.println("lastAction came back as null from RL_step");
         }
-        Reward_observation_terminal RO=RL_env_step(lastAction);
-       
+        Reward_observation_terminal RO = RL_env_step(lastAction);
+
 
         if (RO.isTerminal()) {
             RL_agent_end(RO.getReward());
         } else {
-           lastAction = RL_agent_step(RO.getReward(), RO.getObservation());
+            lastAction = RL_agent_step(RO.getReward(), RO.getObservation());
         }
         return new Reward_observation_action_terminal(RO.getReward(), RO.getObservation(), lastAction, RO.isTerminal());
     }
@@ -155,14 +151,14 @@ public class LocalGlue implements RLGlueInterface {
         A.agent_cleanup();
     }
 
-//Btanner: Jan 13 : Changing this to make it more like RL_glue.c
+    //Btanner: Jan 13 : Changing this to make it more like RL_glue.c
 //Btanner: Sept 19 2008 : Re-ported directly from RL_glue.c
     public synchronized int RL_episode(int maxStepsThisEpisode) {
         Reward_observation_action_terminal rlStepResult = new Reward_observation_action_terminal(0, null, null, 0);
-        int currentStep = 0;
+        int currentStep;
         RL_start();
         /* RL_start sets current step to 1, so we should start x at 1 */
-        for (currentStep = 1; !rlStepResult.isTerminal() && (maxStepsThisEpisode == 0 ? true : currentStep < maxStepsThisEpisode); currentStep++) {
+        for (currentStep = 1; !rlStepResult.isTerminal() && (maxStepsThisEpisode == 0 || currentStep < maxStepsThisEpisode); currentStep++) {
             rlStepResult = RL_step();
         }
 

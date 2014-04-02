@@ -23,8 +23,6 @@ limitations under the License.
 package org.rlcommunity.rlglue.codec;
 
 import org.rlcommunity.rlglue.codec.installer.Installer;
-import org.rlcommunity.rlglue.codec.util.AgentLoader;
-import org.rlcommunity.rlglue.codec.util.EnvironmentLoader;
 
 /**
  * This is the executable class from the JavaRLGlueCodec JAR.
@@ -32,26 +30,28 @@ import org.rlcommunity.rlglue.codec.util.EnvironmentLoader;
  * no longer the best way :: see Agent/Environment Loading in the Java Codec Manual).
  * <p>It will also tell you exactly what version and build of the codec you are using if you
  * do<br>java -jar JavaRLGlueCodec --version
+ *
  * @author Brian Tanner
  */
 public class RLGlueCore {
 
-    private static void printDiagnostics(){
+    private static void printDiagnostics() {
         System.out.println("--------------------------------");
         System.out.println("RL-Glue Java Codec");
         System.out.println("--------------------------------");
-        System.out.println("\t\tInterface Version: "+getSpecVersion());
-        System.out.println("\t\tBuild Version: "+getImplementationVersion());
+        System.out.println("\t\tInterface Version: " + getSpecVersion());
+        System.out.println("\t\tBuild Version: " + getImplementationVersion());
 
-        boolean isInstalled=Installer.isInstalled();
+        boolean isInstalled = Installer.isInstalled();
 
-        if(isInstalled){
-            System.out.println("Installed in: "+Installer.getInstallDir());
-        }else{
-            System.out.println("NOT Installed: free-floating at: "+Installer.getFloatDir());
+        if (isInstalled) {
+            System.out.println("Installed in: " + Installer.getInstallDir());
+        } else {
+            System.out.println("NOT Installed: free-floating at: " + Installer.getFloatDir());
         }
 
     }
+
     private static void printHelp() {
         System.out.println("--------------------------------");
         System.out.println("RL-Glue.jar main diagnostic program");
@@ -65,6 +65,7 @@ public class RLGlueCore {
     private static void printVersion() {
         System.out.println(getSpecVersion());
     }
+
     private static void printBuildVersion() {
         System.out.println(getImplementationVersion());
     }
@@ -97,24 +98,24 @@ public class RLGlueCore {
     }
 
     /**
-     * Get the Specification (Interface) version of RLGlue as set in the Manifest file.  
+     * Get the Specification (Interface) version of RLGlue as set in the Manifest file.
+     *
      * @return String representation of current RLGlue Interface version.
      * @since 2.1
-     * 
      */
     public static String getSpecVersion() {
-        String specAsString = RLGlueCore.class.getPackage().getSpecificationVersion();
-        return specAsString;
+        return RLGlueCore.class.getPackage().getSpecificationVersion();
     }
 
     /**
-     * Get the Implementation (Build) version of RLGlue as set in the Manifest file.  
+     * Get the Implementation (Build) version of RLGlue as set in the Manifest file.
+     *
      * @return String representation of current RLGlue Build version.
      * @since 2.1
      */
     public static String getImplementationVersion() {
         return RLGlueCore.class.getPackage().getImplementationVersion();
     }
-    
-    
+
+
 }
