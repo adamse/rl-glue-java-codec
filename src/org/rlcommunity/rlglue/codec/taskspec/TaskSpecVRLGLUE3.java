@@ -18,15 +18,17 @@ tmpToken=T.nextToken();
  */
 package org.rlcommunity.rlglue.codec.taskspec;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import org.rlcommunity.rlglue.codec.taskspec.ranges.AbstractRange;
 import org.rlcommunity.rlglue.codec.taskspec.ranges.DoubleRange;
 import org.rlcommunity.rlglue.codec.taskspec.ranges.IntRange;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 /**
- * The newest version of the Task Spec (Nov 1 2008). 
+ * The newest version of the Task Spec (Nov 1 2008).
+ *
  * @author Brian Tanner
  */
 public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
@@ -54,11 +56,12 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
     }
 
     /**
-     * Create a new updated TaskSpecVRLGLUE3 object from a previous generation task 
+     * Create a new updated TaskSpecVRLGLUE3 object from a previous generation task
      * spec object.
+     *
      * @param V3TaskSpec
      */
-    TaskSpecVRLGLUE3(TaskSpecV3 V3TaskSpec) {
+    public TaskSpecVRLGLUE3(TaskSpecV3 V3TaskSpec) {
         thisVersion = ourVersion;
         if (V3TaskSpec.getEpisodic() == 'e') {
             thisProblemType = "episodic";
@@ -150,8 +153,8 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
 
     }
 
-    TaskSpecVRLGLUE3(TaskSpecVersionOnly versionOnlySpec) {
-        this.thisVersion=versionOnlySpec.getVersionString();
+    public TaskSpecVRLGLUE3(TaskSpecVersionOnly versionOnlySpec) {
+        this.thisVersion = versionOnlySpec.getVersionString();
         System.err.println("Task spec was parsed as non-standard version.  Only version information is available.");
     }
 
@@ -199,6 +202,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
     public void setActionCharLimit(int charLimit) {
         this.numActChars = charLimit;
     }
+
     //Should assert these are all not null
     public void setRewardRange(DoubleRange newRewardRange) {
         this.rewardRange = newRewardRange;
@@ -215,6 +219,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
 
     /**
      * Parse a task spec string.
+     *
      * @param taskSpecString
      */
     public TaskSpecVRLGLUE3(String taskSpecString) {
@@ -307,7 +312,6 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
         }
 
 
-
         checkLabel("REWARDS", nextToken);
         nextToken = T.nextToken();
         if (nextToken.startsWith("(")) {
@@ -358,6 +362,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
 
     /**
      * Returns a person-friendly string  version of the object.
+     *
      * @return a person friendly, human readable verson of the task spec.
      */
     @Override
@@ -373,7 +378,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
             SB.append(doubleRange);
         }
         SB.append("\n");
-        SB.append("Char Obs: " + numObsChars + "\n");
+        SB.append("Char Obs: ").append(numObsChars).append("\n");
 
         SB.append("Int Act\n");
         for (IntRange intRange : intActions) {
@@ -385,13 +390,13 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
             System.out.print(doubleRange);
         }
         SB.append("\n");
-        SB.append("Char act: " + numActChars + "\n");
+        SB.append("Char act: ").append(numActChars).append("\n");
 
         SB.append("\n");
-        SB.append("Rewards: " + rewardRange.toString() + "\n");
+        SB.append("Rewards: ").append(rewardRange.toString()).append("\n");
 
         SB.append("\n");
-        SB.append("Extra: " + extra + "\n");
+        SB.append("Extra: ").append(extra).append("\n");
         return SB.toString();
 
     }
@@ -402,6 +407,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
 
     /**
      * Return a valid RLGLUEV3 task spec for this object.
+     *
      * @return a string representing a valid RLGLUEV3 task spec for this object.
      */
     public String toTaskSpec() {
@@ -571,6 +577,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
         return getContinuousObservationRange(i);
     }
     //I pasted all of the taskSpecDelegate methods below.
+
     /**
      * @see org.rlcommunity.rlglue.codec.taskspec.TaskSpec#getStringRepresentation()
      */
@@ -688,7 +695,7 @@ public class TaskSpecVRLGLUE3 extends TaskSpecDelegate {
     }
 
     /**
-     * @see org.rlcommunity.rlglue.codec.taskspec.TaskSpec#getVersion() 
+     * @see org.rlcommunity.rlglue.codec.taskspec.TaskSpec#getVersion()
      */
     @Override
     public double getVersion() {
