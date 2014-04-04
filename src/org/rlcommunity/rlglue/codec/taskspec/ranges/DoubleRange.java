@@ -18,7 +18,6 @@
  */
 package org.rlcommunity.rlglue.codec.taskspec.ranges;
 
-import java.util.StringTokenizer;
 
 /**
  *

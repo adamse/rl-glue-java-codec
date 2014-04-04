@@ -638,8 +638,6 @@ public class TaskSpecV3 extends TaskSpecDelegate {
         int numObs = num_continuous_obs_dims + num_discrete_obs_dims;
         obsString += (numObs) + "_[";
 
-        int contIndex = 0;
-        int descIndex = 0;
         for (int i = 0; i < numObs; i++) {
             obsString += obs_types[i] + ",";
         }

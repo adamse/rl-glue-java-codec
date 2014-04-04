@@ -588,6 +588,6 @@ class TaskSpecV2 extends TaskSpecDelegate
         this.reward_min = min;
     }
     public int getParserVersion() {
-        return this.parser_version;
+        return parser_version;
     }
 }

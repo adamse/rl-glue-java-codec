@@ -29,8 +29,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.rlcommunity.rlglue.codec.types.Action;
 import org.rlcommunity.rlglue.codec.types.Observation;
 import org.rlcommunity.rlglue.codec.types.RL_abstract_type;
@@ -93,7 +91,6 @@ public class Network {
     private boolean blocking = true;
     private ByteBuffer recvBuffer;
     private ByteBuffer sendBuffer;
-    private boolean debug = false;
 
     public Network() {
         recvBuffer = ByteBuffer.allocateDirect(kByteBufferDefaultSize);
@@ -336,30 +333,6 @@ public class Network {
         Action returnVal = new Action();
         fillAbstractType(returnVal);
         return returnVal;
-    }
-
-    /*
-     *
-     * Hmm, this method might actually make it quite expensive to make abstract types because
-     * we need to read them once, then make a copy immediately when we change them
-     * into specialized supertypes...
-     * @deprecated
-     */
-    private final RL_abstract_type getAbstractType() {
-        final int numInts = this.getInt();
-        final int numDoubles = this.getInt();
-        final int numChars = this.getInt();
-
-        RL_abstract_type key = new RL_abstract_type(numInts, numDoubles, numChars);
-
-        key.intArray = getInts(numInts);
-        key.doubleArray = getDoubles(numDoubles);
-
-        for (int i = 0; i < numChars; ++i) {
-            key.charArray[i] = this.getChar();
-        }
-
-        return key;
     }
 
     private final void fillAbstractType(RL_abstract_type toFill) {
