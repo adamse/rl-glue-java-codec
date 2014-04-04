@@ -33,7 +33,7 @@ import java.util.Arrays;
  *
  * @author btanner
  */
-public class RL_abstract_type implements Comparable {
+public class RL_abstract_type implements Comparable<RL_abstract_type> {
 
     public int[] intArray = null;
     public double[] doubleArray = null;
@@ -43,9 +43,9 @@ public class RL_abstract_type implements Comparable {
      * Create a RL_abstract_type with arrays allocated according to numIntegers,
      * numDoubles, and numChars
      *
-     * @param numIntegers    Size of int array to allocate.
-     * @param numDoubles Size of double array to allocate.
-     * @param numChars   Size of char array to allocate.
+     * @param numIntegers Size of int array to allocate.
+     * @param numDoubles  Size of double array to allocate.
+     * @param numChars    Size of char array to allocate.
      */
     public RL_abstract_type(int numIntegers, int numDoubles, int numChars) {
         intArray = new int[numIntegers];
@@ -169,81 +169,80 @@ public class RL_abstract_type implements Comparable {
      * Allows us to easily compare abstract types so that we can put them
      * in maps and stuff.
      *
-     * @param cObject
-     * @return -1 if this is 'smaller' then cObject, +1 if this is 'bigger' than cObject, 0 if they are identical.
+     * @param other The object to compare against
+     * @return -1 if this is 'smaller' then other, +1 if this is 'bigger' than other, 0 if they are identical.
      */
-    public int compareTo(Object cObject) {
-        RL_abstract_type compareO = (RL_abstract_type) cObject;
+    public int compareTo(RL_abstract_type other) {
 
-        if (intArray == null & compareO.intArray != null) {
+        if (intArray == null & other.intArray != null) {
             return -1;
         }
-        if (intArray != null & compareO.intArray == null) {
+        if (intArray != null & other.intArray == null) {
             return 1;
         }
 
-        if (intArray != null & compareO.intArray != null) {
-            if (intArray.length < compareO.intArray.length) {
+        if (intArray != null & other.intArray != null) {
+            if (intArray.length < other.intArray.length) {
                 return -1;
             }
-            if (intArray.length > compareO.intArray.length) {
+            if (intArray.length > other.intArray.length) {
                 return 1;
             }
 
             for (int i = 0; i < intArray.length; i++) {
-                if (intArray[i] < compareO.intArray[i]) {
+                if (intArray[i] < other.intArray[i]) {
                     return -1;
                 }
-                if (intArray[i] > compareO.intArray[i]) {
+                if (intArray[i] > other.intArray[i]) {
                     return 1;
                 }
             }
         }
-        if (doubleArray == null & compareO.doubleArray != null) {
+        if (doubleArray == null & other.doubleArray != null) {
             return -1;
         }
-        if (doubleArray != null & compareO.doubleArray == null) {
+        if (doubleArray != null & other.doubleArray == null) {
             return 1;
         }
 
-        if (doubleArray != null & compareO.doubleArray != null) {
-            if (doubleArray.length < compareO.doubleArray.length) {
+        if (doubleArray != null & other.doubleArray != null) {
+            if (doubleArray.length < other.doubleArray.length) {
                 return -1;
             }
-            if (doubleArray.length > compareO.doubleArray.length) {
+            if (doubleArray.length > other.doubleArray.length) {
                 return 1;
             }
 
             for (int i = 0; i < doubleArray.length; i++) {
-                if (doubleArray[i] < compareO.doubleArray[i]) {
+                if (doubleArray[i] < other.doubleArray[i]) {
                     return -1;
                 }
-                if (doubleArray[i] > compareO.doubleArray[i]) {
+                if (doubleArray[i] > other.doubleArray[i]) {
                     return 1;
                 }
             }
         }
 
-        if (charArray == null & compareO.charArray != null) {
+        if (charArray == null & other.charArray != null) {
             return -1;
         }
-        if (charArray != null & compareO.charArray == null) {
+        if (charArray != null & other.charArray == null) {
             return 1;
         }
 
-        if (charArray != null & compareO.charArray != null) {
-            if (charArray.length < compareO.charArray.length) {
+        if (charArray != null & other.charArray != null) {
+            if (charArray.length < other.charArray.length) {
                 return -1;
             }
-            if (charArray.length > compareO.charArray.length) {
+            if (charArray.length > other.charArray.length) {
                 return 1;
             }
 
             for (int i = 0; i < charArray.length; i++) {
-                if (charArray[i] < compareO.charArray[i]) {
+                if (charArray[i] < other.charArray[i]) {
                     return -1;
                 }
-                if (charArray[i] > compareO.charArray[i]) {
+                if (charArray[i] > other.charArray[i]) {
                     return 1;
                 }
             }
