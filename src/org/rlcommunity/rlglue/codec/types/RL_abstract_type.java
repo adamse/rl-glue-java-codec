@@ -143,26 +143,9 @@ public class RL_abstract_type implements Comparable {
      */
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append("numInts: ").append(intArray.length);
-        b.append("\n");
-        b.append("numDoubles: ").append(doubleArray.length);
-        b.append("\n");
-        b.append("numChars: ").append(charArray.length);
-        b.append("\n");
-        if (intArray != null) {
-            for (int anIntArray : intArray) {
-                b.append(" ").append(anIntArray);
-            }
-        }
-        for (double aDoubleArray : doubleArray) {
-            b.append(" ").append(aDoubleArray);
-        }
-        for (char aCharArray : charArray) {
-            b.append(" ").append(aCharArray);
-        }
-
-        return b.toString();
+        return Arrays.toString(intArray) 
+            + ", " + Arrays.toString(doubleArray)
+            + ", " + Arrays.toString(charArray);
     }
 
     /**
