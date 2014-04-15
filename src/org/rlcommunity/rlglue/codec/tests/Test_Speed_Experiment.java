@@ -32,9 +32,6 @@ public static int runTest(){
 
         RLGlue.RL_init();
 //Run an episode to get the JVM warmed up, etc             
-
-        int isTerminal = RLGlue.RL_episode(500);
-        
         
         long startTime=System.currentTimeMillis();
 

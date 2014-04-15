@@ -17,19 +17,20 @@ See the License for the specific language governing permissions and
 */
 
 package org.rlcommunity.rlglue.codec.taskspec;
+
 import java.util.StringTokenizer;
 
 /**
  * The newest version of the Task Spec (May 15th 2008). With the release of
  * version 3, the framework of the Task Spec (in Java atleast) was overhauled.
  * The capability of adding more versions of the Task Spec without affecting
- * old versions was addded. @see rlglue.utilities.TaskSpecDelegate for more 
+ * old versions was addded. @see rlglue.utilities.TaskSpecDelegate for more
  * info. TaskSpecV3 now has the capability of appending a string of extra data
  * onto the end of the task spec.
- * 
+ *
  * @author mradkie
  */
-class TaskSpecV3 extends TaskSpecDelegate {
+public class TaskSpecV3 extends TaskSpecDelegate {
 
     /**
      * Task Spec version. Should be 3.
@@ -103,39 +104,39 @@ class TaskSpecV3 extends TaskSpecDelegate {
      * Version of the parser used for this Task Spec.
      */
     static final int parser_version = 3;
-    
-    public TaskSpecV3(TaskSpecV2 oldTaskSpec){
-        this.episodic=oldTaskSpec.getEpisodic();
-        this.obs_dim=oldTaskSpec.getObsDim();
-        this.action_dim=oldTaskSpec.getActionDim();
-        this.num_continuous_action_dims=oldTaskSpec.getNumContinuousActionDims();
-        this.num_continuous_obs_dims=oldTaskSpec.getNumContinuousObsDims();
-        this.num_discrete_action_dims=oldTaskSpec.getNumDiscreteActionDims();
-        this.num_discrete_obs_dims=oldTaskSpec.getNumDiscreteObsDims();
-        this.obs_types=oldTaskSpec.getObsTypes();
-        this.obs_mins=oldTaskSpec.getObsMins();
-        this.obs_maxs=oldTaskSpec.getObsMaxs();
-        this.action_types=oldTaskSpec.getActionTypes();
-        this.action_mins=oldTaskSpec.getActionMins();
-        this.action_maxs=oldTaskSpec.getActionMaxs();
-        this.reward_max=oldTaskSpec.getRewardMax();
-        this.reward_min=oldTaskSpec.getRewardMin();
-        extraString="";
+
+    public TaskSpecV3(TaskSpecV2 oldTaskSpec) {
+        this.episodic = oldTaskSpec.getEpisodic();
+        this.obs_dim = oldTaskSpec.getObsDim();
+        this.action_dim = oldTaskSpec.getActionDim();
+        this.num_continuous_action_dims = oldTaskSpec.getNumContinuousActionDims();
+        this.num_continuous_obs_dims = oldTaskSpec.getNumContinuousObsDims();
+        this.num_discrete_action_dims = oldTaskSpec.getNumDiscreteActionDims();
+        this.num_discrete_obs_dims = oldTaskSpec.getNumDiscreteObsDims();
+        this.obs_types = oldTaskSpec.getObsTypes();
+        this.obs_mins = oldTaskSpec.getObsMins();
+        this.obs_maxs = oldTaskSpec.getObsMaxs();
+        this.action_types = oldTaskSpec.getActionTypes();
+        this.action_mins = oldTaskSpec.getActionMins();
+        this.action_maxs = oldTaskSpec.getActionMaxs();
+        this.reward_max = oldTaskSpec.getRewardMax();
+        this.reward_min = oldTaskSpec.getRewardMin();
+        this.extraString = "";
     }
 
     /**
-     * The constructor for version 3 of the Task Spec taks a string as a 
+     * The constructor for version 3 of the Task Spec taks a string as a
      * parameter. This string is then parsed out, and the information from this
      * string, such as number of actions or observations can be accessed. The
-     * format of the string should follow the conventions of the Task Spec 
+     * format of the string should follow the conventions of the Task Spec
      * language. Please refer to {@link rlglue.utilities.TaskSpec Task Spec}
      * for more information.
-     * <p>
+     * <p/>
      * Version 3 of the Task Spec added the capability of appending a string of
      * extra data onto the end of the Task Spec.
-     * 
+     *
      * @param taskSpecString String format of a Task Spec to be parsed into an
-     * object.
+     *                       object.
      */
     public TaskSpecV3(String taskSpecString) {
         /* Break the task spec into its six component parts
@@ -158,7 +159,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
         String observationString = this.removeWhiteSpace(tokenizer.nextToken());
         String actionString = this.removeWhiteSpace(tokenizer.nextToken());
         String rewardString;
-        extraString = new String("");
+        extraString = "";
         version = Double.parseDouble(versionString);
 
         // pull off the reward
@@ -168,7 +169,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
             rewardString = "[]";
         }
 
-        String thetoken = "";
+        String thetoken;
         while (tokenizer.hasMoreTokens()) {
             thetoken = tokenizer.nextToken();
             extraString += thetoken;
@@ -178,7 +179,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
         // check to make sure this is a valid task type
         if (episodic != 'e' && episodic != 'c') {
             System.err.println("Invalid task type. Specify episodic (e) or continuous (c)");
-           System.exit(1);
+            System.exit(1);
         }
 
         try {
@@ -194,17 +195,16 @@ class TaskSpecV3 extends TaskSpecDelegate {
         }
     }
 
-    TaskSpecV3() {
+    public TaskSpecV3() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
      * Parses out the observation information from the string parameter and
      * stores it. Number of observations and observation types are parsed.
-     * 
+     *
      * @param obsTypesString Observation portion of the Task Spec.
      * @throws java.lang.Exception
-     * @return none
      */
     protected void parseObservationTypesAndDimensions(String obsTypesString) throws Exception {
         // Discard the [ ] around the types string
@@ -247,10 +247,9 @@ class TaskSpecV3 extends TaskSpecDelegate {
     /**
      * Parses the ranges for the observations, storing the minimum values in one
      * array and the max values in a second array.
-     * 
-     * @param observationTokenizer Tokenizer on the observation string, 
-     * tokenizing on the '_'.
-     * @return none 
+     *
+     * @param observationTokenizer Tokenizer on the observation string,
+     *                             tokenizing on the '_'.
      */
     protected void parseObservationRanges(StringTokenizer observationTokenizer) {
         // Now we can allocate our obs mins and obs maxs arrays
@@ -275,10 +274,9 @@ class TaskSpecV3 extends TaskSpecDelegate {
     /**
      * Parses out the action information from the string parameter and
      * stores it. Number of actions and action types are parsed.
-     * 
+     *
      * @param obsTypesString Action portion of the Task Spec.
      * @throws java.lang.Exception
-     * @return none
      */
     protected void parseActionTypesAndDimensions(String actionTypesString) throws Exception {
         // Discard the [ ] around the types string
@@ -318,13 +316,12 @@ class TaskSpecV3 extends TaskSpecDelegate {
         }
     }
 
-     /**
+    /**
      * Parses the ranges for the actions, storing the minimum values in one
      * array and the max values in a second array.
-     * 
-     * @param observationTokenizer Tokenizer on the action string, 
-     * tokenizing on the '_'.
-     * @return none 
+     *
+     * @param observationTokenizer Tokenizer on the action string,
+     *                             tokenizing on the '_'.
      */
     protected void parseActionRanges(StringTokenizer actionTokenizer) {
         // Now we can allocate our obs mins and obs maxs arrays
@@ -349,13 +346,12 @@ class TaskSpecV3 extends TaskSpecDelegate {
 
     /**
      * Parses all information out of the observation portion of the Task Spec.
-     * Observation string is passed in, the number of observations, the 
+     * Observation string is passed in, the number of observations, the
      * observation types and ranges are all parsed out of this string and stored
      * within the respective variables.
-     * 
+     *
      * @param observationString Observation portion of the Task Spec string
      * @throws java.lang.Exception
-     * @return none
      */
     protected void parseObservations(String observationString) throws Exception {
         /* Break the observation into its three component parts
@@ -371,17 +367,16 @@ class TaskSpecV3 extends TaskSpecDelegate {
         parseObservationTypesAndDimensions(obsTypesString);
         parseObservationRanges(observationTokenizer);
     }
-    
+
     /**
      * Parses all information out of the actions portion of the Task Spec.
-     * Action string is passed in, the number of actions, the 
+     * Action string is passed in, the number of actions, the
      * action types and ranges are all parsed out of this string and stored
      * within the respective variables.
-     * 
+     *
      * @param observationString Action portion of the Task Spec string
      * @throws java.lang.Exception
-     * @return none
-     */  
+     */
     protected void parseActions(String actionString) throws Exception {
         StringTokenizer actionTokenizer = new StringTokenizer(actionString, "_");
         String actionDimensionString = actionTokenizer.nextToken();
@@ -391,13 +386,13 @@ class TaskSpecV3 extends TaskSpecDelegate {
         parseActionTypesAndDimensions(actionTypesString);
         parseActionRanges(actionTokenizer);
     }
+
     /**
      * Parses all information out of the reward portion of the Task Spec.
      * Reward string is passed in, the min and max reward is stored.
-     * 
+     *
      * @param observationString Reward portion of the Task Spec string
      * @throws java.lang.Exception
-     * @return none
      */
     protected void parseRewards(String rewardString) throws Exception {
         //if both min and max rewards are defined
@@ -416,7 +411,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
      * Parses a double out of a string.  This method acts like an overloaded
      * Double.parseDouble(String) method, conventions for -infinity and infinity
      * were added.
-     * 
+     *
      * @param valueString String to parse the double out of.
      * @return The double parsed out of the strng.
      */
@@ -446,24 +441,19 @@ class TaskSpecV3 extends TaskSpecDelegate {
      * Checks if the range of a given parameter is known. Observations, actions
      * and rewards all follow the convention [min,max]. If the min and max are
      * not specified, the range is unknown.
-     * 
+     *
      * @param valueRange String of the form "[min,max]" where min and max may
-     * not be specified ("[,] or []").
+     *                   not be specified ("[,] or []").
      * @return True if range is known, false otherwise.
      */
     protected boolean rangeKnown(String valueRange) {
-        if (valueRange.equals("[,]")) {
-            return false;
-        } else if (valueRange.equals("[]")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !valueRange.equals("[,]") &&
+               !valueRange.equals("[]");
     }
 
     /**
      * Removes spaces from a given string.
-     * 
+     *
      * @param input String to remove spaces from.
      * @return Input string after spaces are removed.
      */
@@ -479,9 +469,9 @@ class TaskSpecV3 extends TaskSpecDelegate {
     /**
      * Checks to make sure that: observation mins < observation maxs;
      * action mins < action maxs and reward mins < reward maxs.
-     * 
+     *
      * @throws java.lang.Exception Exception thrown if one of these conditions
-     * is not met.
+     *                             is not met.
      */
     protected void constraintCheck() throws Exception {
         for (int i = 0; i < this.obs_dim; i++) {
@@ -498,6 +488,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
             throw new Exception("Reward min>max: " + this.reward_min);
         }
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isObsMinNegInfinity(int index)
      */
@@ -511,42 +502,49 @@ class TaskSpecV3 extends TaskSpecDelegate {
     public boolean isActionMinNegInfinity(int index) {
         return (this.action_mins[index] == Double.NEGATIVE_INFINITY);
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isObsMaxPosInfinity(int index)
      */
     public boolean isObsMaxPosInfinity(int index) {
         return (this.obs_maxs[index] == Double.POSITIVE_INFINITY);
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isActionMaxPosInfinity(int index)
      */
     public boolean isActionMaxPosInfinity(int index) {
         return (this.action_maxs[index] == Double.POSITIVE_INFINITY);
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isObsMinUnknown(int index)
      */
     public boolean isObsMinUnknown(int index) {
         return new Double(obs_mins[index]).isNaN();
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isObsMaxUnknown(int index)
      */
     public boolean isObsMaxUnknown(int index) {
         return new Double(obs_maxs[index]).isNaN();
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isActionMinUnknown(int index)
      */
     public boolean isActionMinUnknown(int index) {
         return new Double(action_mins[index]).isNaN();
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isActionMaxUnknown(int index)
      */
     public boolean isActionMaxUnknown(int index) {
         return new Double(action_maxs[index]).isNaN();
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isMinRewardNegInf()
      */
@@ -554,6 +552,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
         return new Double(reward_min).isInfinite();
 
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#isMaxRewardInf()
      */
@@ -580,9 +579,9 @@ class TaskSpecV3 extends TaskSpecDelegate {
     }
 
     /**
-     * Builds the string representation of the Task Spec, which follows the 
+     * Builds the string representation of the Task Spec, which follows the
      * Task Spec language.
-     * 
+     *
      * @param none
      * @return String representation of the Task Spec
      */
@@ -607,7 +606,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
     /**
      * Builds the action portion of the Task Spec string from the information
      * stored within this Task Spec object.
-     * 
+     *
      * @param none
      * @return String representation of the action information.
      */
@@ -630,7 +629,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
     /**
      * Builds the observation portion of the Task Spec string from the information
      * stored within this Task Spec object.
-     * 
+     *
      * @param none
      * @return String representation of the observation information.
      */
@@ -639,8 +638,6 @@ class TaskSpecV3 extends TaskSpecDelegate {
         int numObs = num_continuous_obs_dims + num_discrete_obs_dims;
         obsString += (numObs) + "_[";
 
-        int contIndex = 0;
-        int descIndex = 0;
         for (int i = 0; i < numObs; i++) {
             obsString += obs_types[i] + ",";
         }
@@ -656,43 +653,43 @@ class TaskSpecV3 extends TaskSpecDelegate {
      * Builds a debug string of all the information stored within this Task Spec.
      * Instead of printing this debug info to the screen, it is returned so the
      * implementer can use it.
-     * 
+     *
      * @param none
      * @return String full of debug information about the Task Spec object.
      */
     public String dump() {
         String obs_types_string = "";
-        for (int i = 0; i < obs_types.length; ++i) {
-            obs_types_string += obs_types[i] + " ";
+        for (char obs_type : obs_types) {
+            obs_types_string += obs_type + " ";
         }
 
         String obs_mins_string = "";
-        for (int i = 0; i < obs_mins.length; ++i) {
-            obs_mins_string += obs_mins[i] + " ";
+        for (double obs_min : obs_mins) {
+            obs_mins_string += obs_min + " ";
         }
 
         String obs_maxs_string = "";
-        for (int i = 0; i < obs_maxs.length; ++i) {
-            obs_maxs_string += obs_maxs[i] + " ";
+        for (double obs_max : obs_maxs) {
+            obs_maxs_string += obs_max + " ";
         }
 
         String action_types_string = "";
-        for (int i = 0; i < action_types.length; ++i) {
-            action_types_string += action_types[i] + " ";
+        for (char action_type : action_types) {
+            action_types_string += action_type + " ";
         }
 
         String action_mins_string = "";
-        for (int i = 0; i < action_mins.length; ++i) {
-            action_mins_string += action_mins[i] + " ";
+        for (double action_min : action_mins) {
+            action_mins_string += action_min + " ";
         }
 
         String action_maxs_string = "";
-        for (int i = 0; i < action_maxs.length; ++i) {
-            action_maxs_string += action_maxs[i] + " ";
+        for (double action_max : action_maxs) {
+            action_maxs_string += action_max + " ";
         }
 
 
-        String taskSpecObject = "version: " + version + "\n" +
+        return "version: " + version + "\n" +
                 "episodic: " + episodic + "\n" +
                 "obs_dim: " + obs_dim + "\n" +
                 "num_discrete_obs_dims: " + num_discrete_obs_dims + "\n" +
@@ -708,8 +705,6 @@ class TaskSpecV3 extends TaskSpecDelegate {
                 "action_maxs: " + action_maxs_string + "\n" +
                 "reward_min: " + this.reward_min + "\n" +
                 "reward_max: " + this.reward_max;
-
-        return taskSpecObject;
     }
 
     /**
@@ -823,7 +818,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
     public void setObsMaxs(double[] maxs) {
         this.obs_maxs = maxs.clone();
     }
-    
+
     /**
      * @see rlglue.utilities.TaskSpec#getActionDim()
      */
@@ -907,6 +902,7 @@ class TaskSpecV3 extends TaskSpecDelegate {
     public void setActionMaxs(double[] maxs) {
         this.action_maxs = maxs.clone();
     }
+
     /**
      * @see rlglue.utilities.TaskSpec#getRewardMax()
      */
@@ -953,6 +949,6 @@ class TaskSpecV3 extends TaskSpecDelegate {
      * @see rlglue.utilities.TaskSpec#getParserVersion()
      */
     public int getParserVersion() {
-        return this.parser_version;
+        return parser_version;
     }
 }

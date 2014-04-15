@@ -24,28 +24,28 @@ import org.rlcommunity.rlglue.codec.taskspec.ranges.IntRange;
 /**
  * This class is used to store and parse the information given to an Agent in
  * the RL-Glue framework. The Task Spec stores information the Agent needs
- * regarding the environment, such as the number of actions, observations, and 
+ * regarding the environment, such as the number of actions, observations, and
  * their ranges. For more information please read the
- * <a href="http://rlai.cs.ualberta.ca/RLBB/TaskSpecification.html"> 
+ * <a href="http://rlai.cs.ualberta.ca/RLBB/TaskSpecification.html">
  * RL-Glue Task Spec info</a>
- * <p>
+ * <p/>
  * This class was written to handle future revisions to the Task Spec while
- * providing backwards compatibility with old Task Spec versions. This is 
- * accomplished through the use of the factory design pattern. The 
+ * providing backwards compatibility with old Task Spec versions. This is
+ * accomplished through the use of the factory design pattern. The
  * TaskSpecDelegate object is the medium through which the TaskSpec communicates
  * with different implementations of the Task Spec versions. So far, each
  * Task Spec version has incrementally added functionality, but this might not
  * always be the case, so this framework was designed to robustly accomodate
  * future versions.
- * 
+ * <p/>
  * <h2>This most recent Implementation of TaskSpecDelegate is TaskSpecVRLGLUE3</h2>
- * 
+ *
  * @author Matt Radkie
  */
 public class TaskSpec {
 
     /**
-     * Generic object extended by all versions of TaskSpec parsers 
+     * Generic object extended by all versions of TaskSpec parsers
      */
     private TaskSpecDelegate theTSO = null;
     /**
@@ -54,56 +54,10 @@ public class TaskSpec {
     private String TSVersion = "0";
 
     /**
-     * Gets the Task Spec version.
-     * @deprecated  Moving to a string version
-     * 
-     * @return Integer value of the Task Spec version.
-     */
-    public int getVersion() {
-        try {
-            return (Integer.parseInt(TSVersion));
-        } catch (NumberFormatException ex) {
-            System.err.println("Asked for version of task spec through deprecated int method and could not make it work. Version is: " + getVersionString());
-            return 0;
-        }
-    }
-
-    /**
-     * Quick sanity check.  It parses the task spec into an Task Spec TSA.  Then, it 
-     * uses the string representation of TSA to make TSAB.  Finally, it makes sure that the 
-     * string representation of TSA is the same as TSB.
-     * @param theTaskSpecString
-     * @return Whether this task spec appears to be valid
-     */
-    public static boolean checkTaskSpec(String theTaskSpecString) {
-        TaskSpec TS = new TaskSpec(theTaskSpecString);
-        try {
-            boolean match = TS.getStringRepresentation().equals(new TaskSpec(TS.getStringRepresentation()).getStringRepresentation());
-            if (!match) {
-                System.err.println("Task spec check failed: if the task spec means what we think it means, these two should be equal:");
-                System.err.println("First Construction:\t" + TS.getStringRepresentation());
-                System.err.println("Second Construction:\t" + new TaskSpec(TS.getStringRepresentation()).getStringRepresentation());
-            }
-            return match;
-        } catch (Throwable T) {
-            System.err.println("There is a problem parsing the task spec you were checking: " + T);
-            return false;
-        }
-    }
-
-    /**
-     * @since RL-Glue3.0
-     * @return a string representing the version of the task spec that has been parsed
-     */
-    public String getVersionString() {
-        return theTSO.getVersionString();
-    }
-
-    /**
      * Constructor that takes a string adhereing to the Task Spec language
      * protocol. This string is parsed out by the appropriate version of the
      * Task Spec.
-     * 
+     *
      * @param taskSpec String following the Task Spec language
      */
     public TaskSpec(String taskSpec) {
@@ -161,14 +115,61 @@ public class TaskSpec {
     }
 
     /**
+     * Gets the Task Spec version.
+     *
+     * @return Integer value of the Task Spec version.
+     * @deprecated Moving to a string version
+     */
+    public int getVersion() {
+        try {
+            return (Integer.parseInt(TSVersion));
+        } catch (NumberFormatException ex) {
+            System.err.println("Asked for version of task spec through deprecated int method and could not make it work. Version is: " + getVersionString());
+            return 0;
+        }
+    }
+
+    /**
+     * Quick sanity check.  It parses the task spec into an Task Spec TSA.  Then, it
+     * uses the string representation of TSA to make TSAB.  Finally, it makes sure that the
+     * string representation of TSA is the same as TSB.
+     *
+     * @param theTaskSpecString
+     * @return Whether this task spec appears to be valid
+     */
+    public static boolean checkTaskSpec(String theTaskSpecString) {
+        TaskSpec TS = new TaskSpec(theTaskSpecString);
+        try {
+            boolean match = TS.getStringRepresentation().equals(new TaskSpec(TS.getStringRepresentation()).getStringRepresentation());
+            if (!match) {
+                System.err.println("Task spec check failed: if the task spec means what we think it means, these two should be equal:");
+                System.err.println("First Construction:\t" + TS.getStringRepresentation());
+                System.err.println("Second Construction:\t" + new TaskSpec(TS.getStringRepresentation()).getStringRepresentation());
+            }
+            return match;
+        } catch (Throwable T) {
+            System.err.println("There is a problem parsing the task spec you were checking: " + T);
+            return false;
+        }
+    }
+
+    /**
+     * @return a string representing the version of the task spec that has been parsed
+     * @since RL-Glue3.0
+     */
+    public String getVersionString() {
+        return theTSO.getVersionString();
+    }
+
+
+    /**
      * Returns the string representation of the Task Spec object. This string
      * representation follows the Task Spec language as outlined
-     * <a href="http://rlai.cs.ualberta.ca/RLBB/TaskSpecification.html"> 
+     * <a href="http://rlai.cs.ualberta.ca/RLBB/TaskSpecification.html">
      * here</a>
-     * 
-     * 
-     * @deprecated We never should have overloaded toString in this way.
+     *
      * @return String representation of the Task Spec
+     * @deprecated We never should have overloaded toString in this way.
      */
     public String toString() {
         return getStringRepresentation();
@@ -177,9 +178,9 @@ public class TaskSpec {
     /**
      * Returns the string representation of the Task Spec object. This string
      * representation follows the Task Spec language as outlined
-     * <a href="http://glue.rl-community.org/Home/rl-glue/task-spec-language"> 
+     * <a href="http://glue.rl-community.org/Home/rl-glue/task-spec-language">
      * http://glue.rl-community.org/Home/rl-glue/task-spec-language</a>
-     * 
+     *
      * @return String representation of the Task Spec
      */
     public String getStringRepresentation() {
@@ -188,11 +189,11 @@ public class TaskSpec {
 
     /**
      * Returns a string containing debug information about the Task Spec. This
-     * debug information is usually printed to the screen, but returning it as 
+     * debug information is usually printed to the screen, but returning it as
      * a string allows the caller to print it out to log files etc as well.
-     * @deprecated This is dumb.
-     * 
+     *
      * @return String containing debug information for the Task Spec.
+     * @deprecated This is dumb.
      */
     public String dump() {
         return theTSO.dump();
@@ -200,7 +201,7 @@ public class TaskSpec {
 
     /**
      * Checks if the observation min at index is negative infinity.
-     * 
+     *
      * @param index Integer index of the obs_min array.
      * @return True if obs_min[index] is negative infinity, false otherwise.
      */
@@ -210,7 +211,7 @@ public class TaskSpec {
 
     /**
      * Checks if the action min at index is negative infinity.
-     * 
+     *
      * @param index - integer index of the action_mins array.
      * @return True if action_min[index] is negative infinity, false otherwise.
      */
@@ -220,7 +221,7 @@ public class TaskSpec {
 
     /**
      * Checks if the observation max at index is positive infinity.
-     * 
+     *
      * @param index Interger index of the obs_maxs array.
      * @return True if obs_max[index] is positive infinity, false otherwise.
      */
@@ -230,7 +231,7 @@ public class TaskSpec {
 
     /**
      * Checks if the action max at index is positive infinity.
-     * 
+     *
      * @param index Integer index of the action_maxs array.
      * @return True if action_max[index] is positive infinity, false otherwise.
      */
@@ -240,9 +241,9 @@ public class TaskSpec {
 
     /**
      * Checks if the observation min at index is unknown.
-     * 
+     *
      * @param index Integer index of the obs_mins array.
-     * @return True if the min value for observation[index] is unknown, false 
+     * @return True if the min value for observation[index] is unknown, false
      * otherwise.
      */
     public boolean isObsMinUnknown(int index) {
@@ -251,9 +252,9 @@ public class TaskSpec {
 
     /**
      * Checks if the observation max at index is unknown.
-     * 
+     *
      * @param index Integer index of the obs_max array.
-     * @return True if the max value for observation[index] is unknown, false 
+     * @return True if the max value for observation[index] is unknown, false
      * otherwise.
      */
     public boolean isObsMaxUnknown(int index) {
@@ -262,9 +263,9 @@ public class TaskSpec {
 
     /**
      * Checks if the min action at index is unknown.
-     * 
+     *
      * @param index Integer index of the action_mins array.
-     * @return True if the min value for action[index] is unknown, false 
+     * @return True if the min value for action[index] is unknown, false
      * otherwise.
      */
     public boolean isActionMinUnknown(int index) {
@@ -273,9 +274,9 @@ public class TaskSpec {
 
     /**
      * Checks if the action max at index is unknown.
-     * 
+     *
      * @param index Integer index of the action_maxs array.
-     * @return True if the max value for action[index] is unknown, false 
+     * @return True if the max value for action[index] is unknown, false
      * otherwise.
      */
     public boolean isActionMaxUnknown(int index) {
@@ -284,9 +285,8 @@ public class TaskSpec {
 
     /**
      * Checks if the min reward is negative infinity.
-     * 
-     * 
-     * @return True if the min reward is negative infinity, false 
+     *
+     * @return True if the min reward is negative infinity, false
      * otherwise.
      */
     public boolean isMinRewardNegInf() {
@@ -295,9 +295,8 @@ public class TaskSpec {
 
     /**
      * Checks if the max reward is positive infinity.
-     * 
-     * 
-     * @return True if the max reward is positive infinity, false 
+     *
+     * @return True if the max reward is positive infinity, false
      * otherwise.
      */
     public boolean isMaxRewardInf() {
@@ -306,9 +305,8 @@ public class TaskSpec {
 
     /**
      * Checks if the min reward is unknown.
-     * 
-     * 
-     * @return True if the min reward is unknown, false 
+     *
+     * @return True if the min reward is unknown, false
      * otherwise.
      */
     public boolean isMinRewardUnknown() {
@@ -317,9 +315,8 @@ public class TaskSpec {
 
     /**
      * Checks if the max reward is unknown.
-     * 
-     * 
-     * @return True if the max reward is unknown, false 
+     *
+     * @return True if the max reward is unknown, false
      * otherwise.
      */
     public boolean isMaxRewardUnknown() {
@@ -328,9 +325,9 @@ public class TaskSpec {
 
     /**
      * Gets the version of the Task spec.
-     * 
-     * @deprecated Use getVersionString
+     *
      * @return the version of the Task Spec used.
+     * @deprecated Use getVersionString
      */
     public double getTaskSpecVersion() {
         return theTSO.getVersion();
@@ -338,8 +335,7 @@ public class TaskSpec {
 
     /**
      * Gets the episodic characteristic of the Task Spec.
-     * 
-     * 
+     *
      * @return Char value representing if an environment is episodic
      * @deprecated use getProblemType()
      */
@@ -349,9 +345,9 @@ public class TaskSpec {
 
     /**
      * Gets the size of the observation array (Number of observations)
-     * @deprecated This is useless.
-     * 
+     *
      * @return The size of the observation array (Number of observations)
+     * @deprecated This is useless.
      */
     public int getObsDim() {
         return theTSO.getObsDim();
@@ -359,8 +355,7 @@ public class TaskSpec {
 
     /**
      * Gets the number of descrete observations.
-     * 
-     * 
+     *
      * @return Integer value for the number of descrete observations
      */
     public int getNumDiscreteObsDims() {
@@ -369,8 +364,7 @@ public class TaskSpec {
 
     /**
      * Gets the number of continuous observations.
-     * 
-     * 
+     *
      * @return Integer value for the number of continuous observations.
      */
     public int getNumContinuousObsDims() {
@@ -379,9 +373,9 @@ public class TaskSpec {
 
     /**
      * Gets the types for the observations.
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return Character array representing the types of the observations.
+     * @deprecated I don't like this anymore.
      */
     public char[] getObsTypes() {
         return theTSO.getObsTypes();
@@ -389,9 +383,9 @@ public class TaskSpec {
 
     /**
      * Gets the array of mins for the observations.
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return double[] Array of the min values for the observations.
+     * @deprecated I don't like this anymore.
      */
     public double[] getObsMins() {
         return theTSO.getObsMins();
@@ -399,9 +393,9 @@ public class TaskSpec {
 
     /**
      * Gets the array of maxs for the observations.
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return double[] Array of the maxs values for the observations.
+     * @deprecated I don't like this anymore.
      */
     public double[] getObsMaxs() {
         return theTSO.getObsMaxs();
@@ -409,8 +403,7 @@ public class TaskSpec {
 
     /**
      * Gets the size of the action array (Number of actions)
-     * 
-     * 
+     *
      * @return The size of the action array (Number of actions)
      */
     public int getActionDim() {
@@ -419,8 +412,7 @@ public class TaskSpec {
 
     /**
      * Gets the number of descrete actions
-     * 
-     * 
+     *
      * @return Integer number of descrete actions.
      */
     public int getNumDiscreteActionDims() {
@@ -429,8 +421,7 @@ public class TaskSpec {
 
     /**
      * Gets the number of continous actions
-     * 
-     * 
+     *
      * @return Integer number of continous actions.
      */
     public int getNumContinuousActionDims() {
@@ -439,10 +430,9 @@ public class TaskSpec {
 
     /**
      * Gets the types for the actions.
-     * 
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return Character array representing the types of the actions.
+     * @deprecated I don't like this anymore.
      */
     public char[] getActionTypes() {
         return theTSO.getActionTypes();
@@ -450,10 +440,9 @@ public class TaskSpec {
 
     /**
      * Gets the array of mins for the actions.
-     * 
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return double[] Array of the min values for the actions.
+     * @deprecated I don't like this anymore.
      */
     public double[] getActionMins() {
         return theTSO.getActionMins();
@@ -461,10 +450,9 @@ public class TaskSpec {
 
     /**
      * Gets the array of maxs for the actions.
-     * 
-     * @deprecated  I don't like this anymore.
-     * 
+     *
      * @return double[] Array of the max values for the actions.
+     * @deprecated I don't like this anymore.
      */
     public double[] getActionMaxs() {
         return theTSO.getActionMaxs();
@@ -472,8 +460,7 @@ public class TaskSpec {
 
     /**
      * Gets the max reward.
-     * 
-     * 
+     *
      * @return Double value of the max reward.
      */
     public double getRewardMax() {
@@ -482,8 +469,7 @@ public class TaskSpec {
 
     /**
      * Gets the min reward.
-     * 
-     * 
+     *
      * @return Double value of the min reward.
      */
     public double getRewardMin() {
@@ -492,12 +478,11 @@ public class TaskSpec {
 
     /**
      * Gets the string value for the ExtraString.
-     * 
+     * <p/>
      * 'ExtraString' is new for Task Spec version 3. It allows additional
      * information to be appended to the end of the Task Spec. When environments
      * use this feature, agents will require special code to handle this.
-     * 
-     * 
+     *
      * @return String of additional information appended onto the end of the
      * Task Spec.
      */
@@ -507,8 +492,7 @@ public class TaskSpec {
 
     /**
      * Gets the version of the parser used on the Task Spec.
-     * 
-     * 
+     *
      * @return Integer version of the parser used on the Task Spec.
      */
     public int getParserVersion() {
@@ -520,8 +504,8 @@ public class TaskSpec {
      * have been deleted prior to release, but as it makes on going development
      * easier, it has been left for now. Ideally in the future, this code will
      * be removed and moved into test cases.
-     * 
-     * @param args
+     *
+     * @param args Command line arguments
      */
     public static void main(String[] args) {
         /*
@@ -550,6 +534,7 @@ public class TaskSpec {
 
     /**
      * Get the discount factor.
+     *
      * @since RL-Glue-3.0
      */
     public double getDiscountFactor() {
@@ -558,8 +543,9 @@ public class TaskSpec {
 
     /**
      * Get the min, max, and special information for the i'th integer observation.
+     *
+     * @param i index of the observation to observe
      * @since RL-Glue-3.0
-     * @param i
      */
     public IntRange getDiscreteObservationRange(int i) {
         return theTSO.getDiscreteObservationRange(i);
@@ -567,8 +553,9 @@ public class TaskSpec {
 
     /**
      * Get the min, max, and special information for the i'th integer action.
+     *
+     * @param i the index of the action to get information about
      * @since RL-Glue-3.0
-     * @param i
      */
     public IntRange getDiscreteActionRange(int i) {
         return theTSO.getDiscreteActionRange(i);
@@ -576,8 +563,9 @@ public class TaskSpec {
 
     /**
      * Get the min, max, and special information for the i'th double observation.
-     * @since RL-Glue-3.0
+     *
      * @param i
+     * @since RL-Glue-3.0
      */
     public DoubleRange getContinuousObservationRange(int i) {
         return theTSO.getContinuousObservationRange(i);
@@ -585,8 +573,9 @@ public class TaskSpec {
 
     /**
      * Get the min, max, and special information for the i'th double action.
-     * @since RL-Glue-3.0
+     *
      * @param i
+     * @since RL-Glue-3.0
      */
     public DoubleRange getContinuousActionRange(int i) {
         return theTSO.getContinuousActionRange(i);
@@ -594,6 +583,7 @@ public class TaskSpec {
 
     /**
      * Get the range of rewards
+     *
      * @since RL-Glue-3.0
      */
     public DoubleRange getRewardRange() {
@@ -602,6 +592,7 @@ public class TaskSpec {
 
     /**
      * Replacement for getEpisodic
+     *
      * @return episodic | continuous | something else
      * @since RL-Glue-3.0
      */
